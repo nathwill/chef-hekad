@@ -1,0 +1,6 @@
+# Configured by Chef.
+# Changes will be overwritten!
+[hekad]
+<% @config.each_pair do |p,v| %>
+<%= "#{p} = #{v}" %>
+<% end %>
