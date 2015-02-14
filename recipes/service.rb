@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: heka
-# Recipe:: default
+# Recipe:: service
 #
 # Copyright 2015 Nathan Williams
 # 
@@ -16,15 +16,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-%w( install configure ).each do |r|
-  include_recipe "#{cookbook_name}::#{r}"
+service 'hekad' do
+  action [:enable, :start]
 end
-
-# install systemd service unit; if your platform isn't systemd
-# based, chances are it soon will be. if it isn't yet, chances
-# are you're better suited than I am to set up the init system
-cookbook_file '/etc/systemd/system/hekad.service' do
-  source 'hekad.service'
-end
-
-include_recipe "#{cookbook_name}::service"

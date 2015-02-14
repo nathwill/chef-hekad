@@ -1,0 +1,9 @@
+[Unit]
+Description=Mozilla Heka
+
+[Service]
+ExecStart=/usr/bin/hekad -config=/etc/heka
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
