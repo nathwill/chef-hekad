@@ -16,6 +16,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+cookbook_file '/etc/init/hekad.conf' do
+  source 'hekad.conf'
+  not_if { platform_family?('rhel') && node['platform_version'].to_f >= 7.0 }
+end
+
+cookbook_file '/etc/systemd/system/hekad.service' do
+  source 'hekad.service'
+  only_if { platform_family?('rhel') && node['platform_version'].to_f >= 7.0 }
+end
+
 service 'hekad' do
   action [:enable, :start]
 end
