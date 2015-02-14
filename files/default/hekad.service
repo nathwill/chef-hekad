@@ -6,4 +6,5 @@ ExecStart=/usr/bin/hekad -config=/etc/heka
 Restart=on-failure
 
 [Install]
+Alias=heka.service
 WantedBy=multi-user.target
