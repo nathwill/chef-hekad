@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: heka
+# Cookbook Name:: hekad
 # Recipe:: default
 #
 # Copyright 2015 Nathan Williams

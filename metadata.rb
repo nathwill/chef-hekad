@@ -1,4 +1,4 @@
-name             'heka'
+name             'hekad'
 maintainer       'Nathan Williams'
 maintainer_email 'nath.e.will@gmail.com'
 license          'apache2'
