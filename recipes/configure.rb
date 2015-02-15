@@ -16,9 +16,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-directory '/etc/heka'
+directory ::File.join('etc', 'heka')
 
-template '/etc/heka/hekad.toml' do
-  source 'hekad.toml.erb'
-  variables :config => node['heka']['config']
+heka_config 'hekad' do
+  variables({
+    :config => node['heka']['config']
+  })
 end

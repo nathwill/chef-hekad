@@ -69,7 +69,7 @@ class Chef::Provider
       @current_resource.cookbook new_resource.cookbook || new_resource.cookbook_name
       @current_resource.path new_resource.path
       @current_resource.source new_resource.source
-      @current_resource.variables
+      @current_resource.variables new_resource.variables
       @current_resource
     end
 
