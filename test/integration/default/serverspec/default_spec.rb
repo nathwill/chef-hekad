@@ -1,12 +1,26 @@
 require 'spec_helper'
 
 describe 'heka::default' do
-
-  # Serverspec examples can be found at
-  # http://serverspec.org/resource_types.html
-  
-  it 'does something' do
-    skip 'Replace this with meaningful tests'
+  describe 'is installed' do
+    describe package('heka') do
+      it { should be_installed }
+    end
   end
 
+  describe 'is configured' do
+    describe file('/etc/heka') do
+      it { should be_directory }
+    end
+
+    describe file('/etc/heka/hekad.toml') do
+      its(:content) { should match /maxprocs = 2/ }
+    end
+  end
+
+  describe 'is enabled & running' do
+    describe service('hekad') do
+      it { should be_enabled }
+      it { should be_running }
+    end
+  end
 end
