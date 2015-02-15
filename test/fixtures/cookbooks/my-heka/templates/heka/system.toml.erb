@@ -1,0 +1,10 @@
+[LogstreamerInput]
+log_directory = "/var/log"
+file_match = '*\.log'
+
+[PayloadEncoder]
+append_newlines = false
+
+[LogOutput]
+message_matcher = "TRUE"
+encoder = "PayloadEncoder"

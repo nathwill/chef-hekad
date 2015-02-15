@@ -14,5 +14,5 @@ platforms:
 suites:
   - name: default
     run_list:
-      - recipe[hekad::default]
+      - recipe[my-heka]
     attributes:
