@@ -28,6 +28,12 @@ describe 'heka::default' do
       runner.converge(described_recipe)
     end
 
+    it 'installs/configures package and service' do
+      %w( install configure service ).each do |r|
+        expect(chef_run).to include_recipe "hekad::#{r}"
+      end
+    end
+
     it 'converges successfully' do
       chef_run # This should not raise an error
     end
