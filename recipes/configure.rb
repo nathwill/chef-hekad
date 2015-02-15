@@ -16,7 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-directory ::File.join('etc', 'heka')
+directory '/etc/heka'
 
 heka_config 'hekad' do
   variables :config => node['heka']['config']

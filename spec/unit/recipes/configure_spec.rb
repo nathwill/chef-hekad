@@ -1,38 +1,39 @@
-#
 # Cookbook Name:: hekad
-# Recipe:: install
+# Spec:: configure
 #
 # Copyright 2015 Nathan Williams
-#
+# 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-#
+# 
 #     http://www.apache.org/licenses/LICENSE-2.0
-#
+# 
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Download
-heka = node['heka']
+require 'spec_helper'
 
-pkg_file_path =
-  "#{Chef::Config['file_cache_path'] || '/tmp'}/#{heka['package']}"
+describe 'hekad::configure' do
+  context 'When all attributes are default, on an unspecified platform' do
+    let(:chef_run) do
+      runner = ChefSpec::ServerRunner.new
+      runner.converge(described_recipe)
+    end
 
-remote_file 'heka_release_pkg' do
-  path pkg_file_path
-  source [
-    heka['release_url'],
-    heka['tag'],
-    heka['package']
-  ].join('/')
-end
+    it 'sets up the config directory' do
+      expect(chef_run).to create_directory '/etc/heka'
+    end
 
-# Install
-package 'heka' do
-  source pkg_file_path
-  provider Chef::Provider::Package::Dpkg if platform_family?('debian')
+    it 'installs the hekad global configuration' do
+      expect(chef_run).to create_heka_config 'hekad'
+    end
+
+    it 'converges successfully' do
+      chef_run # This should not raise an error
+    end
+  end
 end

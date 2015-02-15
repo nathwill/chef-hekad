@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: heka
+# Cookbook Name:: hekad
 # Spec:: default
 #
 # Copyright 2015 Nathan Williams
@@ -16,13 +16,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 require 'spec_helper'
 
-describe 'heka::default' do
-
+describe 'hekad::default' do
   context 'When all attributes are default, on an unspecified platform' do
-
     let(:chef_run) do
       runner = ChefSpec::ServerRunner.new
       runner.converge(described_recipe)
@@ -37,6 +34,5 @@ describe 'heka::default' do
     it 'converges successfully' do
       chef_run # This should not raise an error
     end
-
   end
 end
