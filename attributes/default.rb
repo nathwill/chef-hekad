@@ -29,12 +29,10 @@ default['heka'].tap do |heka|
 
   heka['tag'] = "v#{heka['version']}"
 
-  case node['platform_family']
-  when 'rhel', 'fedora'
-    heka['package'] = "heka-#{heka['version'].gsub('.','_')}-linux-amd64.rpm"
-  when 'debian'
-    heka['package'] = "heka_#{heka['version']}_amd64.deb"
-  end
+  heka['package'] = value_for_platform_family(
+    'debian' => "heka_#{heka['version']}_amd64.deb",
+    'default' => "heka-#{heka['version'].gsub('.','_')}-linux-amd64.rpm"
+  )
 
   heka['config'] = {
     'maxprocs' => 2
