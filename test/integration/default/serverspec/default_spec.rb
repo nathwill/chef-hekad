@@ -19,7 +19,6 @@ describe 'heka::default' do
 
   describe 'is enabled & running' do
     describe service('hekad') do
-      it { should be_enabled }
       it { should be_running }
     end
   end
