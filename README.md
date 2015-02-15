@@ -80,9 +80,9 @@ Attributes are namespaced under `default['heka']`.
 
 Heka configuration template.
 
-Templates are placed at `/etc/heka/<name>.toml`, are pulled from the cookbook
+Templates are placed at `/etc/heka/$name.toml`, are pulled from the cookbook
 defining the resource, and are expected to be located in the cookbook at
-a default of `templates/default/heka/<name>.toml.erb`.
+a default of `templates/default/heka/$name.toml.erb`.
 
 <table>
   <thead>
@@ -105,14 +105,14 @@ a default of `templates/default/heka/<name>.toml.erb`.
       <td>
         Filesystem location for the rendered config template.
       </td>
-      <td><code>/etc/heka/<name>.toml</code></td>
+      <td><code>/etc/heka/$name.toml</code></td>
     </tr>
     <tr>
       <td>source</td>
       <td>
         template source
       </td>
-      <td><code>heka/<name>.toml.erb</code></td>
+      <td><code>heka/$name.toml.erb</code></td>
     </tr>
     <tr>
       <td>variables</td>
