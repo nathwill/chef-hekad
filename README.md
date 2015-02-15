@@ -1,4 +1,4 @@
-# heka
+# hekad cookbook [![Build Status](https://travis-ci.org/nathwill/chef-hekad.svg?branch=master)](https://travis-ci.org/nathwill/chef-hekad)
 
 A [Chef][chef] cookbook for installing & configuring [Mozilla Heka][docs].
 
