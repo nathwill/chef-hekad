@@ -1,5 +1,5 @@
 [Unit]
-Description=Mozilla Heka
+Description=Heka is a high performance general purpose data acquisition and processing engine.
 
 [Service]
 ExecStart=/usr/bin/hekad -config=/etc/heka
