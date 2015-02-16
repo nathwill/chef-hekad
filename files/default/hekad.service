@@ -1,5 +1,6 @@
 [Unit]
 Description=Heka is a high performance general purpose data acquisition and processing engine.
+Documentation=http://hekad.readthedocs.org/
 
 [Service]
 ExecStart=/usr/bin/hekad -config=/etc/heka
