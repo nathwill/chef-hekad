@@ -6,6 +6,6 @@ description      'Installs/Configures heka'
 long_description 'Installs/Configures heka'
 version          '0.1.2'
 
-%w( ubuntu redhat centos scientific ).each do |p|
+%w( ubuntu fedora redhat centos scientific ).each do |p|
   supports p
 end

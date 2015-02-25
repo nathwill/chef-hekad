@@ -16,14 +16,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+svc_provider = Chef::Platform.find_provider_for_node(node, :service)
+
 cookbook_file '/etc/init/hekad.conf' do
   source 'hekad.conf'
-  not_if { platform_family?('rhel') && node['platform_version'].to_f >= 7.0 }
+  not_if do
+    svc_provider == Chef::Provider::Service::Systemd
+  end
 end
 
 cookbook_file '/etc/systemd/system/hekad.service' do
   source 'hekad.service'
-  only_if { platform_family?('rhel') && node['platform_version'].to_f >= 7.0 }
+  only_if do
+    svc_provider == Chef::Provider::Service::Systemd
+  end
 end
 
 service 'hekad' do
