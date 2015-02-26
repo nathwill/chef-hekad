@@ -19,10 +19,10 @@
 require 'spec_helper'
 
 describe 'hekad::default' do
-  context 'When all attributes are default, on an unspecified platform' do
+  context 'default' do
     let(:chef_run) do
-      runner = ChefSpec::ServerRunner.new
-      runner.converge(described_recipe)
+      ChefSpec::ServerRunner.new(platform: 'centos', version: '7.0')
+      .converge(described_recipe)
     end
 
     it 'installs/configures package and service' do
