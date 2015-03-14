@@ -19,5 +19,5 @@
 directory '/etc/heka'
 
 heka_config 'hekad' do
-  variables :config => node['heka']['config']
+  config node['heka']['config']
 end

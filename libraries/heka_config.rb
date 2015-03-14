@@ -30,13 +30,6 @@ class Chef::Resource
       @action = :create
     end
 
-    def cookbook(arg = nil)
-      set_or_return(
-        :cookbook, arg,
-        :kind_of => String
-      )
-    end
-
     def path(arg = nil)
       set_or_return(
         :path, arg,
@@ -45,17 +38,9 @@ class Chef::Resource
       )
     end
 
-    def source(arg = nil)
+    def config(arg = nil)
       set_or_return(
-        :source, arg,
-        :kind_of => [String, Array],
-        :default => ::File.join('heka', "#{@name}.toml.erb")
-      )
-    end
-
-    def variables(arg = nil)
-      set_or_return(
-        :variables, arg,
+        :config, arg,
         :kind_of => Hash,
         :default => {}
       )
@@ -67,24 +52,22 @@ class Chef::Provider
   class HekaConfig < Chef::Provider
     def initialize(*args)
       super
-      @cfg = Chef::Resource::Template.new(
+      Chef::Resource::ChefGem.new('toml', run_context).run_action(:install)
+      @cfg = Chef::Resource::File.new(
         "heka_config_#{new_resource.name}",
         run_context
       )
     end
 
-    # rubocop: disable AbcSize
     def load_current_resource
-      @current_resource ||= Chef::Resource::HekaConfig.new(new_resource.name)
-      @current_resource.cookbook(
-        new_resource.cookbook || new_resource.cookbook_name
+      @current_resource ||= Chef::Resource::HekaConfig.new(
+        new_resource.name,
+        run_context
       )
       @current_resource.path new_resource.path
-      @current_resource.source new_resource.source
-      @current_resource.variables new_resource.variables
+      @current_resource.config new_resource.config
       @current_resource
     end
-    # rubocop: enable AbcSize
 
     def action_create
       new_resource.updated_by_last_action(edit_cfg(:create))
@@ -97,10 +80,9 @@ class Chef::Provider
     private
 
     def edit_cfg(exec_action)
-      @cfg.cookbook @current_resource.cookbook
+      require 'toml'
       @cfg.path @current_resource.path
-      @cfg.source @current_resource.source
-      @cfg.variables @current_resource.variables
+      @cfg.content TOML::Generator.new(@current_resource.config).body
       @cfg.run_action exec_action
       @cfg.updated_by_last_action?
     end
