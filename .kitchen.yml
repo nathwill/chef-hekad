@@ -1,6 +1,9 @@
 ---
 driver:
-  name: vagrant
+  name: docker
+
+driver_config:
+  use_sudo: false
 
 provisioner:
   name: chef_zero
@@ -16,4 +19,5 @@ suites:
   - name: default
     run_list:
       - recipe[hekad]
+#      - recipe[setup]
     attributes:

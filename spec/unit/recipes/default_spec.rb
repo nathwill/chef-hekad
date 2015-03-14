@@ -22,7 +22,7 @@ describe 'hekad::default' do
   context 'default' do
     let(:chef_run) do
       ChefSpec::ServerRunner.new(platform: 'centos', version: '7.0')
-      .converge(described_recipe)
+        .converge(described_recipe)
     end
 
     it 'installs/configures package and service' do
