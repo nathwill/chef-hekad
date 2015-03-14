@@ -29,6 +29,7 @@ remote_file 'heka_release_pkg' do
     heka['tag'],
     heka['package']
   ].join('/')
+  notifies :install, 'package[heka]', :immediately
 end
 
 # Install

@@ -25,7 +25,7 @@ default['heka'].tap do |heka|
     download
   ).join('/')
 
-  heka['version'] = '0.9.0'
+  heka['version'] = '0.9.1'
 
   heka['tag'] = "v#{heka['version']}"
 
