@@ -16,10 +16,4 @@ describe 'heka::default' do
       its(:content) { should match /maxprocs = 2/ }
     end
   end
-
-  describe 'is enabled & running' do
-    describe service('hekad') do
-      it { should be_running }
-    end
-  end
 end
