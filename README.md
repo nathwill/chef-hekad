@@ -78,11 +78,7 @@ Attributes are namespaced under `default['heka']`.
 
 ### heka_config
 
-Heka configuration template.
-
-Templates are placed at `/etc/heka/$name.toml`, are pulled from the cookbook
-defining the resource, and are expected to be located in the cookbook at
-a default of `templates/default/heka/$name.toml.erb`.
+Heka configuration, maps to a file under /etc/heka.
 
 <table>
   <thead>
@@ -94,13 +90,6 @@ a default of `templates/default/heka/$name.toml.erb`.
   </thead>
   <tbody>
     <tr>
-      <td>cookbook</td>
-      <td>
-        String naming the cookbook containing the template.
-      </td>
-      <td><code>nil</code></td>
-    </tr>
-    <tr>
       <td>path</td>
       <td>
         Filesystem location for the rendered config template.
@@ -108,16 +97,9 @@ a default of `templates/default/heka/$name.toml.erb`.
       <td><code>/etc/heka/$name.toml</code></td>
     </tr>
     <tr>
-      <td>source</td>
+      <td>config</td>
       <td>
-        template source
-      </td>
-      <td><code>heka/$name.toml.erb</code></td>
-    </tr>
-    <tr>
-      <td>variables</td>
-      <td>
-        variables Hash to pass to the source template
+        ruby Hash that will be toml-encoded and written to /etc/heka/$name.toml
       </td>
       <td><code>{}</code></td>
     </tr>
