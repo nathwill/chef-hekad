@@ -1,3 +1,7 @@
+# 0.2.0/ 2015-03-15
+
+* simplify resource/provider by using toml to encode config
+
 # 0.1.3 / 2015-02-26
 
 * testing improvements
