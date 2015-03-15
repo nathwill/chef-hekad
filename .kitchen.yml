@@ -1,9 +1,6 @@
 ---
 driver:
-  name: docker
-
-driver_config:
-  use_sudo: false
+  name: vagrant
 
 provisioner:
   name: chef_zero
@@ -16,8 +13,6 @@ platforms:
   - name: fedora-21
 
 suites:
-  - name: default
+  - name: hekad
     run_list:
       - recipe[hekad]
-      - recipe[setup]
-    attributes:
