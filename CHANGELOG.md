@@ -1,3 +1,7 @@
+# 0.2.1 / 2015-03-30
+
+* add recipe to help with capturing journald logs via syslog
+
 # 0.2.0/ 2015-03-15
 
 * simplify resource/provider by using toml to encode config
