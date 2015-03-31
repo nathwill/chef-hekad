@@ -21,7 +21,11 @@ See attributes documentation about how to set global configuration.
 
 ### hekad::service
 
-Installs and configures the hekad service.
+Installs and configures a hekad service.
+
+### hekad::journald
+
+configures heka to listen for journald syslog forwarding.
 
 ## Attributes
 
@@ -69,7 +73,7 @@ Attributes are namespaced under `default['heka']`.
       <td>
         heka global configuration (Hash)
       </td>
-      <td><code>{'maxprocs' => 2}</code></td>
+      <td><code>{'maxprocs' => 2, 'pid_file' => '/var/run/hekad.pid'}</code></td>
     </tr>
   </tbody>
 </table>
