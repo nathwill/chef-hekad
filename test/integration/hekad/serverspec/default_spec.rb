@@ -22,7 +22,7 @@ describe 'heka::default' do
     end
 
     describe file('/var/log/hekad-journal.log'), :if => os[:family] =~ /(fedora|rhel)/ do
-      its(:content) { should match /CRON/ }
+      its(:content) { should match /journald_syslog/ }
     end
   end
 end
