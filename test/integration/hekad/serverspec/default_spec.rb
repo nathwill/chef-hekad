@@ -20,5 +20,9 @@ describe 'heka::default' do
     describe service('hekad') do
       it { should be_running }
     end
+
+    describe file('/var/log/hekad-journal.log'), :if => os[:family] =~ /(fedora|rhel)/ do
+      its(:content) { should match /CRON/ }
+    end
   end
 end

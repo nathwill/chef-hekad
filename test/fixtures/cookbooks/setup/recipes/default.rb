@@ -1,5 +1,18 @@
 
 if Chef::Platform.find_provider_for_node(node, :service) == Chef::Provider::Service::Systemd
+
+
+  service 'systemd-journald'
+
+  ruby_block 'configure journal to forward to syslog' do
+    block do
+      fe = Chef::Util::FileEdit.new("/etc/systemd/journald.conf")
+      fe.insert_line_if_no_match(/ForwardToSyslog=yes/, "ForwardToSyslog=yes")
+      fe.write_file
+    end
+    notifies :restart, 'service[systemd-journald]', :immediately
+  end
+
   include_recipe 'hekad::systemd_journal'
 
   heka_config 'elasticsearch_json_encoder' do
@@ -8,13 +21,14 @@ if Chef::Platform.find_provider_for_node(node, :service) == Chef::Provider::Serv
         "es_index_from_timestamp" => true
       }
     })
+    notifies :restart, 'service[hekad]', :delayed
   end
 
-  heka_config 'systemd_journal_file_output' do
+  heka_config 'journal_file_output' do
     config({
       "SystemdJournalFileOutput" => {
                    "type" => "FileOutput",
-        "message_matcher" => "Type == 'systemd_journal'",
+        "message_matcher" => "Type == 'journal_syslog'",
                    "path" => "/var/log/hekad-journal.log",
             "flush_count" => 100,
          "flush_operator" => "OR",
@@ -22,5 +36,10 @@ if Chef::Platform.find_provider_for_node(node, :service) == Chef::Provider::Serv
       }
     })
     notifies :restart, 'service[hekad]', :delayed
+  end
+
+  # Generate a searchable log-message
+  service 'crond' do
+    action :enable, :restart
   end
 end
