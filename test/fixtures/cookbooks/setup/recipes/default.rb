@@ -40,6 +40,6 @@ if Chef::Platform.find_provider_for_node(node, :service) == Chef::Provider::Serv
 
   # Generate a searchable log-message
   service 'crond' do
-    action :enable, :restart
+    action [:enable, :restart]
   end
 end
