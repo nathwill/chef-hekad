@@ -13,7 +13,7 @@ if Chef::Platform.find_provider_for_node(node, :service) == Chef::Provider::Serv
     notifies :restart, 'service[systemd-journald]', :immediately
   end
 
-  include_recipe 'hekad::systemd_journal'
+  include_recipe 'hekad::journald'
 
   heka_config 'elasticsearch_json_encoder' do
     config({
@@ -24,11 +24,11 @@ if Chef::Platform.find_provider_for_node(node, :service) == Chef::Provider::Serv
     notifies :restart, 'service[hekad]', :delayed
   end
 
-  heka_config 'journal_file_output' do
+  heka_config 'journald_file_output' do
     config({
-      "SystemdJournalFileOutput" => {
+      "journal_file_output" => {
                    "type" => "FileOutput",
-        "message_matcher" => "Type == 'journal_syslog'",
+        "message_matcher" => "Type == 'journald_syslog'",
                    "path" => "/var/log/hekad-journal.log",
             "flush_count" => 100,
          "flush_operator" => "OR",

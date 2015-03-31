@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: hekad
-# Recipe:: systemd
+# Recipe:: journald
 #
 # Copyright 2015 Nathan Williams <nath.e.will@gmail.com>
 #
@@ -16,26 +16,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Also requires 'ForwardToSyslog=yes' in journald.conf
-heka_config 'journal_syslog_input' do
+# Requires 'ForwardToSyslog=yes' in journald.conf
+heka_config 'journald_syslog_input' do
   config(
-    'journal_syslog_input' => {
+    'journald_syslog_input' => {
       'type' => 'UdpInput',
       'address' => '/run/systemd/journal/syslog',
       'net' => 'unixgram',
-      'decoder' => 'journal_syslog_decoder'
+      'decoder' => 'journald_syslog_decoder'
     }
   )
   notifies :restart, 'service[hekad]', :delayed
 end
 
-heka_config 'journal_syslog_decoder' do
+heka_config 'journald_syslog_decoder' do
   config(
-    'journal_syslog_decoder' => {
+    'journald_syslog_decoder' => {
       'type' => 'SandboxDecoder',
       'filename' => 'lua_decoders/rsyslog.lua',
       'config' => {
-        'type' => 'journal_syslog',
+        'type' => 'journald_syslog',
         'template' => '<%syslogfacility%>%timestamp% %syslogtag%%msg%',
         'hostname_keep' => true
       }
