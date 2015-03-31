@@ -16,22 +16,38 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-%w( luarocks lua-devel systemd-devel ).each do |pkg|
-  package pkg
-end
-
-execute 'install-lua-systemd-bindings' do
-  command 'luarocks install --server=http://rocks.moonscript.org/manifests/daurnimator systemd'
-end
-
-directory '/usr/share/heka/lua_inputs'
-
-cookbook_file '/usr/share/heka/lua_inputs/systemd_journal.lua' do
+cookbook_file '/usr/share/heka/lua_decoders/systemd_journal.lua' do
   source 'systemd_journal.lua'
 end
 
-heka_config 'journal' do
-  config {
+heka_config 'systemd_journal_input' do
+  config({
+    "SystemdJournalInput" => {
+                 "type" => "ProcessInput",
+      "ticker_interval" => 0,
+              "timeout" => 0,
+              "decoder" => "SystemdJournalDecoder",
+              "command" => {
+        "0" => {
+           "bin" => "/usr/bin/journalctl",
+          "args" => ["-b", "-l", "-o", "json", "-f"]
+        }
+      }
+    }
+  })
+  notifies :restart, 'service[hekad]', :delayed
+end
 
-  }
+heka_config 'systemd_journal_decoder' do
+  config({
+    "SystemdJournalDecoder" => {
+          "type" => "SandboxDecoder",
+      "filename" => "lua_decoders/systemd_journal.lua",
+        "config" => {
+                "type" => "systemd_journal",
+        "payload_keep" => false
+      }
+    }
+  })
+  notifies :restart, 'service[hekad]', :delayed
 end

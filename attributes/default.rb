@@ -35,6 +35,9 @@ default['heka'].tap do |heka|
   )
 
   heka['config'] = {
-    'hekad' => { 'maxprocs' => 2 }
+    'hekad' => {
+      'maxprocs' => 2,
+      'pid_file' => '/var/run/hekad.pid'
+    }
   }
 end
