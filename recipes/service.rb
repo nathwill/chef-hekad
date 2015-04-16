@@ -20,15 +20,15 @@ svc_provider = Chef::Platform.find_provider_for_node(node, :service)
 
 cookbook_file '/etc/init/hekad.conf' do
   source 'hekad.conf'
-  not_if do
-    svc_provider == Chef::Provider::Service::Systemd
+  only_if do
+    ::File.directory?('/etc/init')
   end
 end
 
 cookbook_file '/etc/systemd/system/hekad.service' do
   source 'hekad.service'
   only_if do
-    svc_provider == Chef::Provider::Service::Systemd
+    ::File.directory?('/etc/systemd/system')
   end
 end
 
