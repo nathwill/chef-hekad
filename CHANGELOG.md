@@ -1,3 +1,7 @@
+# 0.2.2 / 2015-04-16
+
+* fix chef 11 service provider mis-identification
+
 # 0.2.1 / 2015-03-30
 
 * add recipe to help with capturing journald logs via syslog
