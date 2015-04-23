@@ -1,3 +1,7 @@
+# 0.2.3 / 2015-04-23
+
+* update to latest heka bugfix release
+
 # 0.2.2 / 2015-04-16
 
 * fix chef 11 service provider mis-identification
