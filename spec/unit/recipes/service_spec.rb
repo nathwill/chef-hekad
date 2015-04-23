@@ -18,14 +18,12 @@
 require 'spec_helper'
 
 describe 'hekad::service' do
+  let(:chef_run) { ChefSpec::ServerRunner.new.converge(described_recipe) }
+
   context 'When all attributes are default, on Ubuntu' do
     let(:chef_run) do
       ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '12.04')
       .converge(described_recipe)
-    end
-
-    it 'installs the upstart configuration' do
-      expect(chef_run).to create_cookbook_file '/etc/init/hekad.conf'
     end
 
     it 'converges successfully' do
@@ -39,17 +37,17 @@ describe 'hekad::service' do
       .converge(described_recipe)
     end
 
-    it 'installs the systemd unit file for hekad' do
-      expect(chef_run).to create_cookbook_file '/etc/systemd/system/hekad.service'
-    end
-
-    it 'manages the hekad service' do
-      expect(chef_run).to enable_service 'hekad'
-      expect(chef_run).to start_service 'hekad'
-    end
-
     it 'converges successfully' do
       chef_run # This should not raise an error
     end
+  end
+
+  it 'manages the hekad service' do
+    expect(chef_run).to enable_service 'hekad'
+    expect(chef_run).to start_service 'hekad'
+  end
+
+  it 'converges successfully' do
+    chef_run
   end
 end
