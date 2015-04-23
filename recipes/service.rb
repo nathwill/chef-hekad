@@ -16,8 +16,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-svc_provider = Chef::Platform.find_provider_for_node(node, :service)
-
 cookbook_file '/etc/init/hekad.conf' do
   source 'hekad.conf'
   only_if do
