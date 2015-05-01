@@ -30,7 +30,7 @@ cookbook_file '/etc/systemd/system/hekad.service' do
   end
 end
 
-if platform_family?('debian')
+if platform_family?('debian') and node['heka']['service']['upstart']
   cookbook_file '/etc/init.d/hekad' do
     source 'hekad.upstart'
     only_if do
@@ -49,7 +49,7 @@ if platform_family?('debian')
 
   service 'hekad' do
     action [:enable, :start]
-    provider Chef::Provider::Service::Upstart if platform_family?('debian')
+    provider Chef::Provider::Service::Upstart
   end
 else
   service 'hekad' do

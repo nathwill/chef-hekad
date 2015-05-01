@@ -40,4 +40,8 @@ default['heka'].tap do |heka|
       'pid_file' => '/var/run/hekad.pid'
     }
   }
+
+  # Set to true to use Upstart instead of systemd on debian
+  heka['service']['upstart'] = false
+
 end
