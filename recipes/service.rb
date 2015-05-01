@@ -31,7 +31,6 @@ cookbook_file '/etc/systemd/system/hekad.service' do
 end
 
 if platform_family?('debian')
-
   cookbook_file '/etc/init.d/hekad' do
     source 'hekad.upstart'
     only_if do
