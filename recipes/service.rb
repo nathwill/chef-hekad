@@ -32,6 +32,13 @@ end
 
 if platform_family?('debian')
 
+  cookbook_file '/etc/init.d/hekad' do
+    source 'hekad.upstart'
+    only_if do
+      ::File.directory?('/etc/init.d')
+    end
+  end
+
   group 'heka' do
     action :create
   end
