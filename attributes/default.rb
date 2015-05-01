@@ -43,5 +43,4 @@ default['heka'].tap do |heka|
 
   # Set to true to use Upstart instead of systemd on debian
   heka['service']['upstart'] = false
-
 end
