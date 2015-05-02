@@ -37,10 +37,6 @@ default['heka'].tap do |heka|
   heka['config'] = {
     'hekad' => {
       'maxprocs' => 2,
-      'pid_file' => '/var/run/hekad.pid'
     }
   }
-
-  # Set to true to use Upstart instead of systemd on debian
-  heka['service']['upstart'] = false
 end

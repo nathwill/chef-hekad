@@ -16,43 +16,47 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-cookbook_file '/etc/init/hekad.conf' do
-  source 'hekad.conf'
-  only_if do
-    ::File.directory?('/etc/init')
-  end
+group 'heka' do
+  system true
+  action :create
 end
 
+user 'heka' do
+  system true
+  gid 'heka'
+end
+
+directory '/var/cache/hekad' do
+  owner 'heka'
+  group 'heka'
+end
+
+# Fedora, CentOS >= 7, Ubuntu >= 15.04
 cookbook_file '/etc/systemd/system/hekad.service' do
   source 'hekad.service'
-  only_if do
-    ::File.directory?('/etc/systemd/system')
-  end
+  only_if { ::File.directory?('/etc/systemd/system') }
+  not_if { ::File.directory?('/etc/init') }
+  notifies :restart, 'service[hekad]', :delayed
 end
 
-if platform_family?('debian') && node['heka']['service']['upstart']
-  cookbook_file '/etc/init.d/hekad' do
-    source 'hekad.upstart'
-    only_if do
-      ::File.directory?('/etc/init.d')
-    end
-  end
+# CentOS 6
+cookbook_file '/etc/init/hekad.conf' do
+  source 'hekad.conf'
+  only_if { ::File.directory?('/etc/init') }
+  not_if { platform_family?('debian') }
+end
 
-  group 'heka' do
-    action :create
+# Ubuntu <= 15.04, 
+cookbook_file '/etc/init.d/hekad' do
+  source 'hekad.sysv'
+  mode '0755'
+  not_if do
+    platform_family?('rhel') ||
+      platform_version.to_f >= 15.04
   end
+  notifies :restart, 'service[hekad]', :delayed
+end
 
-  user 'heka' do
-    system true
-    gid 'heka'
-  end
-
-  service 'hekad' do
-    action [:enable, :start]
-    provider Chef::Provider::Service::Upstart
-  end
-else
-  service 'hekad' do
-    action [:enable, :start]
-  end
+service 'hekad' do
+  action [:enable, :start]
 end
