@@ -30,6 +30,29 @@ cookbook_file '/etc/systemd/system/hekad.service' do
   end
 end
 
-service 'hekad' do
-  action [:enable, :start]
+if platform_family?('debian') && node['heka']['service']['upstart']
+  cookbook_file '/etc/init.d/hekad' do
+    source 'hekad.upstart'
+    only_if do
+      ::File.directory?('/etc/init.d')
+    end
+  end
+
+  group 'heka' do
+    action :create
+  end
+
+  user 'heka' do
+    system true
+    gid 'heka'
+  end
+
+  service 'hekad' do
+    action [:enable, :start]
+    provider Chef::Provider::Service::Upstart
+  end
+else
+  service 'hekad' do
+    action [:enable, :start]
+  end
 end
