@@ -24,7 +24,7 @@ describe 'hekad::install' do
         .converge(described_recipe)
     end
 
-    it 'downloads the RPM' do
+    it 'downloads the package' do
       expect(chef_run).to create_remote_file 'heka_release_pkg'
     end
 

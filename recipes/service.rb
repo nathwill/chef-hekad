@@ -22,6 +22,8 @@ group 'heka' do
 end
 
 user 'heka' do
+  home '/var/lib/heka'
+  shell '/bin/false'
   system true
   gid 'heka'
 end
@@ -29,6 +31,7 @@ end
 directory '/var/cache/hekad' do
   owner 'heka'
   group 'heka'
+  recursive true
 end
 
 # Fedora, CentOS >= 7, Ubuntu >= 15.04
@@ -46,13 +49,13 @@ cookbook_file '/etc/init/hekad.conf' do
   not_if { platform_family?('debian') }
 end
 
-# Ubuntu <= 15.04, 
+# Ubuntu <= 15.04
 cookbook_file '/etc/init.d/hekad' do
   source 'hekad.sysv'
   mode '0755'
   not_if do
     platform_family?('rhel') ||
-      platform_version.to_f >= 15.04
+      node.platform_version.to_f >= 15.04
   end
   notifies :restart, 'service[hekad]', :delayed
 end

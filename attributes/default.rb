@@ -36,7 +36,7 @@ default['heka'].tap do |heka|
 
   heka['config'] = {
     'hekad' => {
-      'maxprocs' => 2,
+      'maxprocs' => 2
     }
   }
 end
