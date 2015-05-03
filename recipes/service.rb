@@ -47,6 +47,7 @@ cookbook_file '/etc/init/hekad.conf' do
   source 'hekad.conf'
   only_if { ::File.directory?('/etc/init') }
   not_if { platform_family?('debian') }
+  notifies :restart, 'service[hekad]', :delayed
 end
 
 # Ubuntu <= 15.04
