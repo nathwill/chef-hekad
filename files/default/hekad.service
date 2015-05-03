@@ -3,6 +3,8 @@ Description=Heka is a high performance general purpose data acquisition and proc
 Documentation=http://hekad.readthedocs.org/
 
 [Service]
+User=heka
+Group=heka
 ExecStart=/usr/bin/hekad -config=/etc/heka
 Restart=on-failure
 

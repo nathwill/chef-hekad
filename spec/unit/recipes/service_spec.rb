@@ -42,6 +42,18 @@ describe 'hekad::service' do
     end
   end
 
+  it 'creates the heka user' do
+    expect(chef_run).to create_user 'heka'
+  end
+
+  it 'creates the heka group' do
+    expect(chef_run).to create_group 'heka'
+  end
+
+  it 'creates the heka base_dir' do
+    expect(chef_run).to create_directory '/var/cache/hekad'
+  end
+
   it 'manages the hekad service' do
     expect(chef_run).to enable_service 'hekad'
     expect(chef_run).to start_service 'hekad'
