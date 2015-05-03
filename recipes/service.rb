@@ -56,7 +56,7 @@ cookbook_file '/etc/init.d/hekad' do
   mode '0755'
   not_if do
     platform_family?('rhel') ||
-      node.platform_version.to_f >= 15.04
+      node['platform_version'].to_f >= 15.04
   end
   notifies :restart, 'service[hekad]', :delayed
 end
