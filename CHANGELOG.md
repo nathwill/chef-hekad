@@ -1,3 +1,9 @@
+# 0.3.0 / 2015-05-02
+
+* manage system user/group, run hekad service non-privileged (thanks @jsh2134!)
+* pull in sysv script (thanks @jsh2134!) for Ubuntu 1{2,4}.04
+* rework service mgmt
+
 # 0.2.3 / 2015-04-23
 
 * update to latest heka bugfix release
