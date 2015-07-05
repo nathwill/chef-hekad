@@ -1,3 +1,7 @@
+# 0.3.1 / 2015-07-05
+
+* update sysv init file (thanks @jsh2134!)
+
 # 0.3.0 / 2015-05-02
 
 * manage system user/group, run hekad service non-privileged (thanks @jsh2134!)
