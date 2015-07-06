@@ -34,11 +34,11 @@ directory '/var/cache/hekad' do
   recursive true
 end
 
-# Fedora, CentOS >= 7, Ubuntu >= 15.04
+# Fedora, CentOS >= 7, Ubuntu >= 15.04, Debian >= 8
 cookbook_file '/etc/systemd/system/hekad.service' do
   source 'hekad.service'
   only_if { ::File.directory?('/etc/systemd/system') }
-  not_if { ::File.directory?('/etc/init') }
+  not_if { ::File.directory?('/etc/init') && !platform?('debian') }
   notifies :restart, 'service[hekad]', :delayed
 end
 
@@ -46,7 +46,7 @@ end
 cookbook_file '/etc/init/hekad.conf' do
   source 'hekad.conf'
   only_if { ::File.directory?('/etc/init') }
-  not_if { platform_family?('debian') }
+  not_if { platform?('debian') && node['platform_version'].to_f >= 8.0 }
   notifies :restart, 'service[hekad]', :delayed
 end
 
@@ -56,11 +56,14 @@ cookbook_file '/etc/init.d/hekad' do
   mode '0755'
   not_if do
     platform_family?('rhel') ||
-      node['platform_version'].to_f >= 15.04
+    ::File.exist?('/etc/init')
   end
   notifies :restart, 'service[hekad]', :delayed
 end
 
 service 'hekad' do
+  if ::File.exist?('/etc/init') && !platform?('debian')
+    provider Chef::Provider::Service::Upstart
+  end
   action [:enable, :start]
 end
