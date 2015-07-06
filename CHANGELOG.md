@@ -1,3 +1,7 @@
+# 0.3.2 / 2015-07-06
+
+* update service provider selection
+
 # 0.3.1 / 2015-07-05
 
 * update sysv init file (thanks @jsh2134!)
