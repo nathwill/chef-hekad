@@ -52,7 +52,7 @@ class Chef::Provider
   class HekaConfig < Chef::Provider
     def initialize(*args)
       super
-      Chef::Resource::ChefGem.new('toml', run_context).run_action(:install)
+      Chef::Resource::ChefGem.new('tomlrb', run_context).run_action(:install)
       @cfg = Chef::Resource::File.new(
         "heka_config_#{new_resource.name}",
         run_context
@@ -80,9 +80,9 @@ class Chef::Provider
     private
 
     def edit_cfg(exec_action)
-      require 'toml'
+      require 'tomlrb'
       @cfg.path @current_resource.path
-      @cfg.content TOML::Generator.new(@current_resource.config).body
+      @cfg.content Tomlrb.parse(@current_resource.config)
       @cfg.run_action exec_action
       @cfg.updated_by_last_action?
     end
