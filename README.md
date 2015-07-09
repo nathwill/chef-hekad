@@ -21,11 +21,7 @@ See attributes documentation about how to set global configuration.
 
 ### hekad::service
 
-Installs and configures a hekad service.
-
-### hekad::journald
-
-configures heka to listen for journald syslog forwarding.
+Installs and configures a heka user, group, and service.
 
 ## Attributes
 
