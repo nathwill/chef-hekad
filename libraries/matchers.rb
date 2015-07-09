@@ -4,7 +4,7 @@ if defined?(ChefSpec)
     ChefSpec::Matchers::ResourceMatcher.new(:heka_config, :create, check)
   end
 
-  def remove_heka_config(check)
-    ChefSpec::Matchers::ResourceMatcher.new(:heka_config, :remove, check)
+  def delete_heka_config(check)
+    ChefSpec::Matchers::ResourceMatcher.new(:heka_config, :delete, check)
   end
 end
