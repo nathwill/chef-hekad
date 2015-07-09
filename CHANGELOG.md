@@ -1,3 +1,7 @@
+# 0.3.3 / 2015-07-09
+
+* now with TOML 0.4.0 compatibility (thanks @funzoneq!)
+
 # 0.3.2 / 2015-07-06
 
 * update service provider selection
