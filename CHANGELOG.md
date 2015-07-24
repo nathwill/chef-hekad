@@ -1,3 +1,9 @@
+# 1.0.0 / 2015-07-24
+
+* enforce plugin name uniqueness by using chef resource name.
+  note that this will break pre-existing configurations by
+  requiring (partial) flattening of the config hash
+
 # 0.3.3 / 2015-07-09
 
 * now with TOML 0.4.0 compatibility (thanks @funzoneq!)
