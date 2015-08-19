@@ -20,7 +20,7 @@
 heka = node['heka']
 
 pkg_file_path = ::File.join(
-  "#{Chef::Config['file_cache_path'] || '/tmp'}",
+  Chef::Config['file_cache_path'] || '/tmp',
   ::File.basename(heka['package_url'])
 )
 
