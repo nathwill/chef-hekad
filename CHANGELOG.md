@@ -1,3 +1,7 @@
+# 2.0.1 / 2015-08-19
+
+* fix systemd service definition
+
 # 2.0.0 / 2015-08-19
 
 * change version selection attributes (breaking change!)
