@@ -27,11 +27,11 @@ default['heka'].tap do |heka|
 
   heka['version'] = '0.9.2'
 
-  heka['tag'] = "v#{heka['version']}"
+  heka['tag'] = "v#{node['heka']['version']}"
 
   heka['package'] = value_for_platform_family(
-    'debian' => "heka_#{heka['version']}_amd64.deb",
-    'default' => "heka-#{heka['version'].gsub('.', '_')}-linux-amd64.rpm"
+    'debian' => "heka_#{node['heka']['version']}_amd64.deb",
+    'default' => "heka-#{node['heka']['version'].gsub('.', '_')}-linux-amd64.rpm"
   )
 
   heka['config'] = {
