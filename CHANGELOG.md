@@ -1,3 +1,9 @@
+# 2.0.0 / 2015-08-19
+
+* change version selection attributes (breaking change!)
+* use systemd cookbook to manage systemd service definition
+* clean up service provider selection rules
+
 # 1.0.0 / 2015-07-24
 
 * enforce plugin name uniqueness by using chef resource name.

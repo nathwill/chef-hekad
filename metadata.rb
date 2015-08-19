@@ -4,7 +4,7 @@ maintainer_email 'nath.e.will@gmail.com'
 license          'apache2'
 description      'Installs/Configures heka'
 long_description 'Installs/Configures heka'
-version          '1.0.0'
+version          '2.0.0'
 
 depends 'systemd'
 
