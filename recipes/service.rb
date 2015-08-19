@@ -36,8 +36,12 @@ end
 
 # Fedora, CentOS >= 7, Ubuntu >= 15.04, Debian >= 8
 systemd_service 'hekad' do
-  wanted_by 'multi-user.target'
-  aliases %w( heka.service )
+  description 'high performance general purpose data acquisition and processing engine'
+  documentation 'man:hekad(1) https://hekad.readthedocs.org/'
+  install do
+    wanted_by 'multi-user.target'
+    aliases %w( heka )
+  end
   service do
     user 'heka'
     group 'heka'
