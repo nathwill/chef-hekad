@@ -19,16 +19,15 @@
 # Download
 heka = node['heka']
 
-pkg_file_path =
-  "#{Chef::Config['file_cache_path'] || '/tmp'}/#{heka['package']}"
+pkg_file_path = ::File.join(
+  "#{Chef::Config['file_cache_path'] || '/tmp'}",
+  ::File.basename(heka['package_url'])
+)
 
 remote_file 'heka_release_pkg' do
   path pkg_file_path
-  source [
-    heka['release_url'],
-    heka['tag'],
-    heka['package']
-  ].join('/')
+  source heka['package_url']
+  checksum heka['checksum']
   notifies :install, 'package[heka]', :immediately
 end
 
