@@ -1,3 +1,9 @@
+# 2.0.2 / 2015-08-19
+
+* fix cops
+* notify service to restart on unit change
+* add mac_os_x support
+
 # 2.0.1 / 2015-08-19
 
 * fix systemd service definition
