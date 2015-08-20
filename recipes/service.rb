@@ -34,7 +34,7 @@ directory '/var/cache/hekad' do
   recursive true
 end
 
-# Fedora, CentOS >= 7, Ubuntu >= 15.04, Debian >= 8
+# systemd
 systemd_service 'hekad' do
   description 'general purpose data acquisition and processing engine'
   documentation 'man:hekad(1) https://hekad.readthedocs.org/'
@@ -49,16 +49,17 @@ systemd_service 'hekad' do
     restart 'on-failure'
   end
   only_if { systemd? }
+  notifies :restart, 'service[hekad]', :delayed
 end
 
-# CentOS 6
+# upstart
 cookbook_file '/etc/init/hekad.conf' do
   source 'hekad.conf'
   only_if { upstart? }
   notifies :restart, 'service[hekad]', :delayed
 end
 
-# Ubuntu <= 15.04
+# sysv
 cookbook_file '/etc/init.d/hekad' do
   source 'hekad.sysv'
   mode '0755'
