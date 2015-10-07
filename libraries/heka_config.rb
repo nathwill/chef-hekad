@@ -17,18 +17,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class Chef::Resource
-  class HekaConfig < Chef::Resource
-    identity_attr :name
+require 'chef/resource/lwrp_base'
+require 'chef/dsl/recipe' # https://github.com/chef/chef/pull/4021
+require 'chef/provider/lwrp_base'
+require 'chef/mixin/params_validate'
 
-    def initialize(name, run_context = nil)
-      super
-      @name = name
-      @resource_name = :heka_config
-      @provider = Chef::Provider::HekaConfig
-      @allowed_actions = [:create, :delete]
-      @action = :create
-    end
+class Chef::Resource
+  class HekaConfig < Chef::Resource::LWRPBase
+    resource_name :heka_config
+    provides :heka_config
+
+    actions :create, :delete
+    default_action :create
+
+    attribute :config, :kind_of => Hash, :default => {}
 
     def path(arg = nil)
       set_or_return(
@@ -37,54 +39,35 @@ class Chef::Resource
         :default => "/etc/heka/#{@name}.toml"
       )
     end
-
-    def config(arg = nil)
-      set_or_return(
-        :config, arg,
-        :kind_of => Hash,
-        :default => {}
-      )
-    end
   end
 end
 
 class Chef::Provider
-  class HekaConfig < Chef::Provider
+  class HekaConfig < Chef::Provider::LWRPBase
     def initialize(*args)
       super
       Chef::Resource::ChefGem.new('toml-rb', run_context).run_action(:install)
-      @cfg = Chef::Resource::File.new(
-        "heka_config_#{new_resource.name}",
-        run_context
-      )
-    end
-
-    def load_current_resource
-      @current_resource ||= Chef::Resource::HekaConfig.new(
-        new_resource.name,
-        run_context
-      )
-      @current_resource.path new_resource.path
-      @current_resource.config new_resource.config
-      @current_resource
-    end
-
-    def action_create
-      new_resource.updated_by_last_action(edit_cfg(:create))
-    end
-
-    def action_delete
-      new_resource.updated_by_last_action(edit_cfg(:delete))
-    end
-
-    private
-
-    def edit_cfg(exec_action)
       require 'toml'
-      @cfg.path @current_resource.path
-      @cfg.content TOML.dump(@current_resource.name => @current_resource.config)
-      @cfg.run_action exec_action
-      @cfg.updated_by_last_action?
+    end
+
+    use_inline_resources
+
+    def whyrun_supported?
+      true
+    end
+
+    provides :heka_config
+
+    %i( create delete ).each do |a|
+      action a do
+        r = new_resource
+
+        f = file r.path do
+          content TOML.dump(r.name => r.config)
+        end
+
+        new_resource.updated_by_last_action(f.updated_by_last_action?)
+      end
     end
   end
 end

@@ -4,10 +4,10 @@ module Heka
       File.executable?('/sbin/initctl')
     end
 
-    module_function :upstart?
+    def systemd?
+      ::IO.read('/proc/1/comm').chomp == 'systemd'
+    end
+
+    module_function :upstart?, :systemd?
   end
 end
-
-::Chef::Resource.send(:include, Heka::Init)
-::Chef::Recipe.send(:include, Heka::Init)
-::Chef::Resource.send(:include, Systemd::Helpers::Init)

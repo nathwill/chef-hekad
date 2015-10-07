@@ -48,14 +48,14 @@ systemd_service 'hekad' do
     exec_start '/usr/bin/hekad -config=/etc/heka'
     restart 'on-failure'
   end
-  only_if { systemd? }
+  only_if { Heka::Init.systemd? }
   notifies :restart, 'service[hekad]', :delayed
 end
 
 # upstart
 cookbook_file '/etc/init/hekad.conf' do
   source 'hekad.conf'
-  only_if { upstart? }
+  only_if { Heka::Init.upstart? }
   notifies :restart, 'service[hekad]', :delayed
 end
 
@@ -63,11 +63,11 @@ end
 cookbook_file '/etc/init.d/hekad' do
   source 'hekad.sysv'
   mode '0755'
-  not_if { systemd? || upstart? }
+  not_if { Heka::Init.systemd? || Heka::Init.upstart? }
   notifies :restart, 'service[hekad]', :delayed
 end
 
 service 'hekad' do
-  provider Chef::Provider::Service::Upstart if upstart?
+  provider Chef::Provider::Service::Upstart if Heka::Init.upstart?
   action [:enable, :start]
 end
