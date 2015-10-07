@@ -1,3 +1,9 @@
+# 2.0.3 / 2015-10-06
+
+* rebase resources on lwrp base
+* simplify service helpers
+* update test matrix
+
 # 2.0.2 / 2015-08-19
 
 * fix cops
