@@ -29,13 +29,13 @@ class Chef::Resource
     actions :create, :delete
     default_action :create
 
-    attribute :config, :kind_of => Hash, :default => {}
+    attribute :config, kind_of: Hash, default: {}
 
     def path(arg = nil)
       set_or_return(
         :path, arg,
-        :kind_of => String,
-        :default => "/etc/heka.d/#{@name}.toml"
+        kind_of: String,
+        default: "/etc/heka.d/#{@name}.toml"
       )
     end
   end
