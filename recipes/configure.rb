@@ -26,7 +26,6 @@ directory '/etc/heka.d'
 directory '/etc/heka' do
   recursive true
   action :delete
-  notifies :stop, 'service[heka]', :immediately
 end
 
 # Install global configuration

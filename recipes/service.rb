@@ -76,6 +76,7 @@ end
 # Stub service for system name
 service 'heka' do
   action :nothing
+  subscribes :stop, 'directory[/etc/heka]', :immediately
 end
 
 service 'hekad' do
