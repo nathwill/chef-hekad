@@ -17,29 +17,31 @@
 # limitations under the License.
 
 default['heka'].tap do |heka|
+  heka['config_dir'] = '/etc/heka.d'
+
+  heka['config'] = {
+    'maxprocs' => 2
+  }
+
   # rubocop: disable LineLength
   heka['package_url'] = value_for_platform(
     'mac_os_x' => {
-      'default' => 'https://github.com/mozilla-services/heka/releases/download/v0.9.2/heka-0_9_2-darwin-amd64.dmg'
+      'default' => 'https://github.com/mozilla-services/heka/releases/download/v0.10.0/heka-0_10_0-darwin-amd64.dmg'
     },
     'default' => value_for_platform_family(
-      'debian' => 'https://github.com/mozilla-services/heka/releases/download/v0.9.2/heka_0.9.2_amd64.deb',
-      'default' => 'https://github.com/mozilla-services/heka/releases/download/v0.9.2/heka-0_9_2-linux-amd64.rpm'
+      'debian' => 'https://github.com/mozilla-services/heka/releases/download/v0.10.0/heka_0.10.0_amd64.deb',
+      'default' => 'https://github.com/mozilla-services/heka/releases/download/v0.10.0/heka-0_10_0-linux-amd64.rpm'
     )
   )
 
   heka['checksum'] = value_for_platform(
     'mac_os_x' => {
-      'default' => '5fef4af06b97bf926fbec7ecb5c7983eed80601d56b2bedac02dad6b8677a094'
+      'default' => '9416e6ce0e3fe56926df86607d8e0c286cd0e9773d9038c80887558ae6f41c55'
     },
     'default' => value_for_platform_family(
-      'debian' => 'e38b223f46aed80276635fa271d9b3a03fa8577f9aeffddea612ad150c614a15',
-      'default' => 'ddfab13c65e2c5716539f0a2da99bd5e5d1debc793775cf226718e9c5f85bccf'
+      'debian' => 'bb56953955a696b8111b3704bab09d1381a955b49b9378d20a63e665f253ec4a',
+      'default' => '383a5d39c5ed62ba2ec95eb5e87555a2107b68bbab9adab9d5195a8a597d803a'
     )
   )
   # rubocop: enable LineLength
-
-  heka['config'] = {
-    'maxprocs' => 2
-  }
 end

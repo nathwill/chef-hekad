@@ -78,7 +78,7 @@ Attributes are namespaced under `default['heka']`.
 
 ### heka_config
 
-Heka configuration, maps to a file under /etc/heka.
+Heka configuration, maps to a file under `/etc/heka.d/`.
 
 <table>
   <thead>
@@ -94,7 +94,7 @@ Heka configuration, maps to a file under /etc/heka.
       <td>
         Filesystem location for the rendered config template.
       </td>
-      <td><code>/etc/heka/$name.toml</code></td>
+      <td><code>/etc/heka.d/$name.toml</code></td>
     </tr>
     <tr>
       <td>config</td>

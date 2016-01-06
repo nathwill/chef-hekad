@@ -23,6 +23,8 @@ end
 
 user 'heka' do
   home '/var/lib/heka'
+  manage_home true
+  supports manage_home: true
   shell '/bin/false'
   system true
   gid 'heka'
@@ -45,7 +47,7 @@ systemd_service 'hekad' do
   service do
     user 'heka'
     group 'heka'
-    exec_start '/usr/bin/hekad -config=/etc/heka'
+    exec_start '/usr/bin/hekad -config=/etc/heka.d'
     restart 'on-failure'
   end
   only_if { Heka::Init.systemd? }
@@ -65,6 +67,15 @@ cookbook_file '/etc/init.d/hekad' do
   mode '0755'
   not_if { Heka::Init.systemd? || Heka::Init.upstart? }
   notifies :restart, 'service[hekad]', :delayed
+end
+
+file '/etc/init.d/heka' do
+  action :delete
+end
+
+# Stub service for system name
+service 'heka' do
+  action :nothing
 end
 
 service 'hekad' do

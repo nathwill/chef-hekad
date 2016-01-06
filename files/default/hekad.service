@@ -5,7 +5,7 @@ Documentation=http://hekad.readthedocs.org/
 [Service]
 User=heka
 Group=heka
-ExecStart=/usr/bin/hekad -config=/etc/heka
+ExecStart=/usr/bin/hekad -config=/etc/heka.d
 Restart=on-failure
 
 [Install]
