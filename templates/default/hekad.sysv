@@ -15,9 +15,9 @@ DESC=hekad
 NAME=hekad
 DAEMON=/usr/bin/$NAME
 DAEMON_USER=heka
-DAEMON_ARGS="-config=/etc/heka.d"
+DAEMON_ARGS="-config=<%= @conf_dir %>"
 PIDFILE=/var/run/$NAME.pid
-SCRIPTNAME=/etc/init.d/heka
+SCRIPTNAME=/etc/init.d/hekad
 
 # Exit if the package is not installed
 [ -x "$DAEMON" ] || exit 0

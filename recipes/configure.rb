@@ -17,7 +17,7 @@
 # limitations under the License.
 
 # Create our own config.d dir
-directory '/etc/heka.d'
+directory node['heka']['config_dir']
 
 # Remove package-installed dir, and
 # shut down service if present, as this
@@ -26,6 +26,7 @@ directory '/etc/heka.d'
 directory '/etc/heka' do
   recursive true
   action :delete
+  not_if { node['heka']['config_dir'] == '/etc/heka' }
 end
 
 # Install global configuration

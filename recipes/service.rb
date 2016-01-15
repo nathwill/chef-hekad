@@ -47,7 +47,7 @@ systemd_service 'hekad' do
   service do
     user 'heka'
     group 'heka'
-    exec_start '/usr/bin/hekad -config=/etc/heka.d'
+    exec_start "/usr/bin/hekad -config=#{node['heka']['config_dir']}"
     restart 'on-failure'
   end
   only_if { Heka::Init.systemd? }
@@ -55,16 +55,18 @@ systemd_service 'hekad' do
 end
 
 # upstart
-cookbook_file '/etc/init/hekad.conf' do
+template '/etc/init/hekad.conf' do
   source 'hekad.conf'
+  variables conf_dir: node['heka']['config_dir']
   only_if { Heka::Init.upstart? }
   notifies :restart, 'service[hekad]', :delayed
 end
 
 # sysv
-cookbook_file '/etc/init.d/hekad' do
+template '/etc/init.d/hekad' do
   source 'hekad.sysv'
   mode '0755'
+  variables conf_dir: node['heka']['config_dir']
   not_if { Heka::Init.systemd? || Heka::Init.upstart? }
   notifies :restart, 'service[hekad]', :delayed
 end
