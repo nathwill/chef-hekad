@@ -84,4 +84,5 @@ end
 service 'hekad' do
   provider Chef::Provider::Service::Upstart if Heka::Init.upstart?
   action [:enable, :start]
+  subscribes :restart, 'directory[/etc/heka]', :delayed
 end

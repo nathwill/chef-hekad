@@ -27,7 +27,6 @@ directory '/etc/heka' do
   recursive true
   action :delete
   not_if { node['heka']['config_dir'] == '/etc/heka' }
-  notifies :restart, 'service[hekad]', :delayed
 end
 
 # Install global configuration
