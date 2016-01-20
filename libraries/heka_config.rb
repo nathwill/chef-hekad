@@ -18,7 +18,6 @@
 # limitations under the License.
 
 require 'chef/resource/lwrp_base'
-require 'chef/dsl/recipe' # https://github.com/chef/chef/pull/4021
 require 'chef/provider/lwrp_base'
 require 'chef/mixin/params_validate'
 
@@ -30,13 +29,13 @@ class Chef::Resource
     actions :create, :delete
     default_action :create
 
-    attribute :config, :kind_of => Hash, :default => {}
+    attribute :config, kind_of: Hash, default: {}
 
     def path(arg = nil)
       set_or_return(
         :path, arg,
-        :kind_of => String,
-        :default => "/etc/heka/#{@name}.toml"
+        kind_of: String,
+        default: "/etc/heka.d/#{@name}.toml"
       )
     end
   end

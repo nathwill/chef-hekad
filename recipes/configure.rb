@@ -16,8 +16,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-directory '/etc/heka'
+# Create our own config.d dir
+directory node['heka']['config_dir']
 
+# Remove package-installed dir, and
+# shut down service if present, as this
+# is likely a first-install, and the user
+# creation will fail to usermod otherwise.
+directory '/etc/heka' do
+  recursive true
+  action :delete
+  not_if { node['heka']['config_dir'] == '/etc/heka' }
+end
+
+# Install global configuration
 heka_config 'hekad' do
   config node['heka']['config']
 end

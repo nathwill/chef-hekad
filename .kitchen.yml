@@ -16,3 +16,4 @@ suites:
   - name: hekad
     run_list:
       - recipe[hekad]
+      - recipe[setup]
