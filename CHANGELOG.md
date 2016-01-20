@@ -1,3 +1,7 @@
+# 3.0.1 / 2016-01-20
+
+* big updates: update to heka 0.10.0, change conf root, templatize some things... use caution upgrading.
+
 # 2.0.3 / 2015-10-06
 
 * rebase resources on lwrp base
