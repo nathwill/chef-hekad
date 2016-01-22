@@ -27,52 +27,11 @@ Installs and configures a heka user, group, and service.
 
 Attributes are namespaced under `default['heka']`.
 
-<table>
-  <thead>
-    <tr>
-      <th>Attribute</th>
-      <th>Description</th>
-      <th>Default Value</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>release_url</td>
-      <td>
-        base url for download path
-      </td>
-      <td><code>https://github.com/mozilla-services/heka/releases/download</code></td>
-    </tr>
-    <tr>
-      <td>version</td>
-      <td>
-        heka release version
-      </td>
-      <td><code>0.8.3</code></td>
-    </tr>
-    <tr>
-      <td>tag</td>
-      <td>
-        heka release tag
-      </td>
-      <td><code>v0.8.3</code></td>
-    </tr>
-    <tr>
-      <td>package</td>
-      <td>
-        heka release package
-      </td>
-      <td><code>heka-0_8_3-linux-amd64.rpm or heka_0.8.3_amd64.deb</code></td>
-    </tr>
-    <tr>
-      <td>config</td>
-      <td>
-        heka global configuration (Hash)
-      </td>
-      <td><code>{'maxprocs' => 2, 'pid_file' => '/var/run/hekad.pid'}</code></td>
-    </tr>
-  </tbody>
-</table>
+|Attribute|Description|Default Value|
+|---------|-----------|-------------|
+|config_dir|base path for configs|`/etc/heka/conf.d`|
+|config|default global configuration|`maxprocs: 2`|
+|package_url|url for release pkg|varies by platform|
 
 ## Resources
 
@@ -80,31 +39,10 @@ Attributes are namespaced under `default['heka']`.
 
 Heka configuration, maps to a file under `/etc/heka.d/`.
 
-<table>
-  <thead>
-    <tr>
-      <th>Attribute</th>
-      <th>Description</th>
-      <th>Default Value</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>path</td>
-      <td>
-        Filesystem location for the rendered config template.
-      </td>
-      <td><code>/etc/heka/conf.d/$name.toml</code></td>
-    </tr>
-    <tr>
-      <td>config</td>
-      <td>
-        ruby Hash that will be toml-encoded and written to /etc/heka/$name.toml
-      </td>
-      <td><code>{}</code></td>
-    </tr>
-  </tbody>
-</table>
+|Attribute|Description|Default Value|
+|---------|-----------|-------------|
+|path|config base for rendered file|`node['heka']['config_dir']`|
+|config|configuration hash|`{}`|
 
 [chef]: https://www.chef.io/
 [docs]: http://hekad.readthedocs.org/
