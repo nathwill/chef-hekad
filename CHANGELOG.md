@@ -1,3 +1,8 @@
+# 4.0.1 / 2016-01-21
+
+* recommended to skip 3.0.1, and go straight to 4.0.1, simplifies upgrade process
+* add reload recipe with conditional reload event-handler
+
 # 3.0.1 / 2016-01-20
 
 * big updates: update to heka 0.10.0, change conf root, templatize some things... use caution upgrading.

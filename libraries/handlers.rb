@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: hekad
-# Library:: Heka::Init
+# Library:: Heka::Handlers
 #
 # Copyright 2016 Nathan Williams
 #
@@ -16,16 +16,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module Heka
-  module Init
-    def upstart?
-      File.executable?('/sbin/initctl')
-    end
+require "chef/resource/service"
 
-    def systemd?
-      ::IO.read('/proc/1/comm').chomp == 'systemd'
-    end
+module Hekad
+  class Handlers
+    def conditionally_reload(run_context)
+      # Identify our resources from the run_list
+      heka_configs = run_context.resource_collection.select do |r|
+        r.is_a?(Chef::Resource::HekaConfig)
+      end
 
-    module_function :upstart?, :systemd?
+      # Restart service if any of our configurations changed
+      run_context.resource_collection.resources(service: 'hekad')
+        .run_action(:restart) if heka_configs.any?(&:updated_by_last_action?)
+    end
   end
 end
