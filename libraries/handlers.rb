@@ -16,8 +16,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require "chef/resource/service"
-
 module Hekad
   class Handlers
     def conditionally_reload(run_context)
