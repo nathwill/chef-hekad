@@ -28,10 +28,6 @@ describe 'hekad::install' do
       expect(chef_run).to create_remote_file 'heka_release_pkg'
     end
 
-    it 'installs the package' do
-      expect(chef_run).to install_package 'heka'
-    end
-
     it 'converges successfully' do
       chef_run # This should not raise an error
     end

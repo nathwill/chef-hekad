@@ -35,4 +35,5 @@ end
 package 'heka' do
   source pkg_file_path
   provider Chef::Provider::Package::Dpkg if platform_family?('debian')
+  action :nothing
 end

@@ -17,8 +17,7 @@
 # limitations under the License.
 
 default['heka'].tap do |heka|
-  heka['config_dir'] = '/etc/heka.d'
-
+  heka['config_dir'] = '/etc/heka/conf.d'
   heka['config'] = {
     'maxprocs' => 2
   }
