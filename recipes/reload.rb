@@ -1,8 +1,8 @@
 #
 # Cookbook Name:: hekad
-# Library:: Heka::Init
+# Recipe:: reload
 #
-# Copyright 2016 Nathan Williams
+# Copyright 2015 Nathan Williams
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,16 +16,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module Heka
-  module Init
-    def upstart?
-      File.executable?('/sbin/initctl')
-    end
+# Adds a handler that restarts the service if any heka_config
+# resources have changed; useful for those who want to remove
+# the need to notify heka service from heka_config resources.
 
-    def systemd?
-      ::IO.read('/proc/1/comm').chomp == 'systemd'
-    end
-
-    module_function :upstart?, :systemd?
+Chef.event_handler do
+  on :converge_complete do
+    Hekad::Handlers.new.conditionally_reload(Chef.run_context)
   end
 end
