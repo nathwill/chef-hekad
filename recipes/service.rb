@@ -22,9 +22,6 @@ group 'heka' do
 end
 
 user 'heka' do
-  home '/var/lib/heka'
-  manage_home true
-  supports manage_home: true
   shell '/bin/false'
   system true
   gid 'heka'
@@ -42,7 +39,6 @@ systemd_service 'hekad' do
   documentation 'man:hekad(1) https://hekad.readthedocs.org/'
   install do
     wanted_by 'multi-user.target'
-    aliases %w( heka )
   end
   service do
     user 'heka'
@@ -75,14 +71,14 @@ file '/etc/init.d/heka' do
   action :delete
 end
 
-# Stub service for system name
 service 'heka' do
-  action :nothing
-  subscribes :stop, 'directory[/etc/heka]', :immediately
+  action [:stop, :disable]
+  subscribes :stop, 'package[heka]', :immediately
 end
 
 service 'hekad' do
   provider Chef::Provider::Service::Upstart if Heka::Init.upstart?
-  action [:enable, :start]
-  subscribes :restart, 'directory[/etc/heka]', :delayed
+  action [:start, :enable]
+  subscribes :restart, 'package[heka]', :delayed
+  subscribes :restart, 'heka_config[hekad]', :delayed
 end

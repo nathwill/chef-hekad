@@ -25,7 +25,7 @@ describe 'hekad::configure' do
     end
 
     it 'sets up the config directory' do
-      expect(chef_run).to create_directory '/etc/heka.d'
+      expect(chef_run).to create_directory '/etc/heka/conf.d'
     end
 
     it 'installs the hekad global configuration' do

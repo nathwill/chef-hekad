@@ -54,6 +54,11 @@ describe 'hekad::service' do
     expect(chef_run).to create_directory '/var/cache/hekad'
   end
 
+  it 'manages the heka service' do
+    expect(chef_run).to disable_service 'heka'
+    expect(chef_run).to stop_service 'heka'
+  end
+
   it 'manages the hekad service' do
     expect(chef_run).to enable_service 'hekad'
     expect(chef_run).to start_service 'hekad'

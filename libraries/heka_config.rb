@@ -30,14 +30,8 @@ class Chef::Resource
     default_action :create
 
     attribute :config, kind_of: Hash, default: {}
-
-    def path(arg = nil)
-      set_or_return(
-        :path, arg,
-        kind_of: String,
-        default: "/etc/heka.d/#{@name}.toml"
-      )
-    end
+    attribute :path, kind_of: String,
+                     default: lazy { node['heka']['config_dir'] }
   end
 end
 
@@ -61,7 +55,7 @@ class Chef::Provider
       action a do
         r = new_resource
 
-        f = file r.path do
+        f = file ::File.join(r.path, "#{r.name}.toml") do
           content TOML.dump(r.name => r.config)
         end
 

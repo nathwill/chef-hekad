@@ -8,15 +8,11 @@ describe 'heka::default' do
   end
 
   describe 'is configured' do
-    describe file('/etc/heka.d') do
+    describe file('/etc/heka/conf.d') do
       it { should be_directory }
     end
 
-    describe file('/etc/heka') do
-      it { should_not exist }
-    end
-
-    describe file('/etc/heka.d/hekad.toml') do
+    describe file('/etc/heka/conf.d/hekad.toml') do
       its(:content) { should match /\[hekad\]/ }
       its(:content) { should match /maxprocs = 2/ }
     end
