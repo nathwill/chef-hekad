@@ -1,3 +1,7 @@
+# 4.0.2 / 2016-02-02
+
+* fix delete action
+
 # 4.0.1 / 2016-01-21
 
 * recommended to skip 3.0.1, and go straight to 4.0.1, simplifies upgrade process
