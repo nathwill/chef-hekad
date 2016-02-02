@@ -57,6 +57,7 @@ class Chef::Provider
 
         f = file ::File.join(r.path, "#{r.name}.toml") do
           content TOML.dump(r.name => r.config)
+          action a
         end
 
         new_resource.updated_by_last_action(f.updated_by_last_action?)
