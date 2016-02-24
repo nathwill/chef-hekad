@@ -45,6 +45,7 @@ systemd_service 'hekad' do
     group 'heka'
     exec_start "/usr/bin/hekad -config=#{node['heka']['config_dir']}"
     restart 'on-failure'
+    kill_mode 'mixed'
   end
   only_if { Heka::Init.systemd? }
   notifies :restart, 'service[hekad]', :delayed
