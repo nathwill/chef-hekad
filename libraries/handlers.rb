@@ -19,7 +19,6 @@
 module Hekad
   class Handlers
     def conditionally_reload(run_context)
-      # Identify our resources from the run_list
       updated = run_context.resource_collection.detect do |r|
         r.is_a?(Chef::Resource::HekaConfig) && r.updated_by_last_action?
       end
