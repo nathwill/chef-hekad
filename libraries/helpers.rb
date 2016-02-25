@@ -23,7 +23,8 @@ module Heka
     end
 
     def systemd?
-      ::IO.read('/proc/1/comm').chomp == 'systemd'
+      ::File.exist?('/proc/1/comm') &&
+        ::IO.read('/proc/1/comm').chomp == 'systemd'
     end
 
     module_function :upstart?, :systemd?

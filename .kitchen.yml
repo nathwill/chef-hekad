@@ -11,9 +11,11 @@ platforms:
   - name: centos-6.7
   - name: centos-7.2
   - name: debian-8.2
+  - name: osx-10.10
 
 suites:
   - name: hekad
     run_list:
+      - recipe[setup::os_x]
       - recipe[hekad]
       - recipe[setup]

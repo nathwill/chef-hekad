@@ -64,7 +64,7 @@ template '/etc/init.d/hekad' do
   source 'hekad.sysv'
   mode '0755'
   variables conf_dir: node['heka']['config_dir']
-  not_if { Heka::Init.systemd? || Heka::Init.upstart? }
+  not_if { Heka::Init.systemd? || Heka::Init.upstart? || platform?('mac_os_x') }
   notifies :restart, 'service[hekad]', :delayed
 end
 
