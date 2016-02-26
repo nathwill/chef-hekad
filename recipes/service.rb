@@ -88,7 +88,7 @@ end
 
 service 'hekad' do
   provider Chef::Provider::Service::Upstart if Heka::Init.upstart?
-  action [:start, :enable]
+  action [:enable, :start]
   subscribes :restart, 'package[heka]', :delayed
   subscribes :restart, 'homebrew_cask[heka]', :delayed
 end
