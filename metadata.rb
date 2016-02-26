@@ -6,6 +6,7 @@ description      'Installs/Configures heka'
 long_description 'Installs/Configures heka'
 version          '4.0.4'
 depends          'systemd'
+depends          'homebrew'
 
 %w( mac_os_x ubuntu fedora redhat centos scientific ).each do |p|
   supports p

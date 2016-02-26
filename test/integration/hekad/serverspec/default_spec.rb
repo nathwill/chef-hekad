@@ -2,8 +2,12 @@ require 'spec_helper'
 
 describe 'heka::default' do
   describe 'is installed' do
-    describe package('heka') do
+    describe package('heka'), :unless => os[:family] == 'darwin' do
       it { should be_installed }
+    end
+
+    describe command('/usr/local/bin/brew cask list'), :if => os[:family] == 'darwin' do
+      its(:stdout) { should match /heka/ }
     end
   end
 

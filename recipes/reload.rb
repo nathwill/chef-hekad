@@ -20,6 +20,8 @@
 # resources have changed; useful for those who want to remove
 # the need to notify heka service from heka_config resources.
 
+require 'chef/event_dispatch/dsl'
+
 Chef.event_handler do
   on :converge_complete do
     Hekad::Handlers.new.conditionally_reload(Chef.run_context)
