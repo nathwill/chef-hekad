@@ -1,3 +1,8 @@
+# 4.1.0 / 2016-02-25
+
+* full osx support (yay!)
+* use mixed KillMode under systemd
+
 # 4.0.2 / 2016-02-02
 
 * fix delete action
