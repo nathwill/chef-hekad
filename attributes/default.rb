@@ -22,21 +22,16 @@ default['heka'].tap do |heka|
     c['maxprocs'] = 2
   end
 
-  # rubocop: disable LineLength
+  # These do not apply to mac_os_x
   heka['package_url'] = value_for_platform(
-    'mac_os_x' => {
-      'default' => 'https://github.com/mozilla-services/heka/releases/download/v0.10.0/heka-0_10_0-darwin-amd64.dmg'
-    },
     'default' => value_for_platform_family(
       'debian' => 'https://github.com/mozilla-services/heka/releases/download/v0.10.0/heka_0.10.0_amd64.deb',
       'default' => 'https://github.com/mozilla-services/heka/releases/download/v0.10.0/heka-0_10_0-linux-amd64.rpm'
     )
   )
 
+  # rubocop: disable LineLength
   heka['checksum'] = value_for_platform(
-    'mac_os_x' => {
-      'default' => '9416e6ce0e3fe56926df86607d8e0c286cd0e9773d9038c80887558ae6f41c55'
-    },
     'default' => value_for_platform_family(
       'debian' => 'bb56953955a696b8111b3704bab09d1381a955b49b9378d20a63e665f253ec4a',
       'default' => '383a5d39c5ed62ba2ec95eb5e87555a2107b68bbab9adab9d5195a8a597d803a'

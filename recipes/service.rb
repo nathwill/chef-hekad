@@ -68,6 +68,15 @@ template '/etc/init.d/hekad' do
   notifies :restart, 'service[hekad]', :delayed
 end
 
+# launchd
+template '/Library/LaunchDaemons/hekad.plist' do
+  source 'hekad.plist'
+  mode '0644'
+  variables conf_dir: node['heka']['config_dir']
+  only_if { platform?('mac_os_x') }
+  notifies :restart, 'service[hekad]', :delayed
+end
+
 file '/etc/init.d/heka' do
   action :delete
 end
@@ -81,5 +90,5 @@ service 'hekad' do
   provider Chef::Provider::Service::Upstart if Heka::Init.upstart?
   action [:start, :enable]
   subscribes :restart, 'package[heka]', :delayed
-  subscribes :restart, 'heka_config[hekad]', :delayed
+  subscribes :restart, 'homebrew_cask[heka]', :delayed
 end

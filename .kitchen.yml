@@ -16,6 +16,5 @@ platforms:
 suites:
   - name: hekad
     run_list:
-      - recipe[setup::os_x]
       - recipe[hekad]
       - recipe[setup]

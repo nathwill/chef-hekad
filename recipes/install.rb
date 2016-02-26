@@ -16,6 +16,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Setup
+if platform?('mac_os_x')
+  include_recipe 'homebrew'
+  include_recipe 'homebrew::cask'
+end
+
 # Download
 heka = node['heka']
 
@@ -29,11 +35,16 @@ remote_file 'heka_release_pkg' do
   source heka['package_url']
   checksum heka['checksum']
   notifies :install, 'package[heka]', :immediately
+  not_if { platform?('mac_os_x') }
 end
 
 # Install
 package 'heka' do
   source pkg_file_path
   provider Chef::Provider::Package::Dpkg if platform_family?('debian')
-  action :nothing
+  not_if { platform?('mac_os_x') }
+end
+
+homebrew_cask 'heka' do
+  only_if { platform?('mac_os_x') }
 end
