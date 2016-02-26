@@ -18,9 +18,9 @@
 
 default['heka'].tap do |heka|
   heka['config_dir'] = '/etc/heka/conf.d'
-  heka['config'] = {
-    'maxprocs' => 2
-  }
+  heka['config'].tap do |c|
+    c['maxprocs'] = 2
+  end
 
   # rubocop: disable LineLength
   heka['package_url'] = value_for_platform(
