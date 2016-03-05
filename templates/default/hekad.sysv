@@ -14,7 +14,7 @@ PATH=/sbin:/usr/sbin:/bin:/usr/bin
 DESC=hekad
 NAME=hekad
 DAEMON=/usr/bin/$NAME
-DAEMON_USER=heka
+DAEMON_USER=<%= @user %>
 DAEMON_ARGS="-config=<%= @conf_dir %>"
 PIDFILE=/var/run/$NAME.pid
 SCRIPTNAME=/etc/init.d/hekad

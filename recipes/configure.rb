@@ -16,7 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-directory '/etc/heka/conf.d' do
+directory node['heka']['config_dir'] do
   recursive true
 end
 

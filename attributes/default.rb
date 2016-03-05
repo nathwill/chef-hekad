@@ -17,9 +17,13 @@
 # limitations under the License.
 
 default['heka'].tap do |heka|
+  heka['user'] = 'heka'
+
   heka['config_dir'] = '/etc/heka/conf.d'
+
   heka['config'].tap do |c|
     c['maxprocs'] = 2
+    c['base_dir'] = '/var/cache/hekad'
   end
 
   # These do not apply to mac_os_x
