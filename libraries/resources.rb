@@ -21,6 +21,8 @@ require 'chef/resource/lwrp_base'
 require 'chef/provider/lwrp_base'
 require 'chef/mixin/params_validate'
 
+require_relative 'helpers'
+
 class Chef::Resource
   class HekaConfig < Chef::Resource::LWRPBase
     resource_name :heka_config
@@ -29,9 +31,67 @@ class Chef::Resource
     actions :create, :delete
     default_action :create
 
+    attribute :type, kind_of: String
     attribute :config, kind_of: Hash, default: {}
     attribute :path, kind_of: String,
                      default: lazy { node['heka']['config_dir'] }
+
+    def self.option_attributes(options = {})
+      options.each_pair { |name, opts| attribute name, opts }
+    end
+
+    def to_toml
+      TOML.dump(name => config)
+    end
+  end
+
+  class HekaGlobalConfig < HekaConfig
+    resource_name :heka_global_config
+    provides :heka_global_config
+
+    option_attributes Heka::Global::OPTIONS
+  end
+
+  class HekaInputConfig < HekaConfig
+    resource_name :heka_input_config
+    provides :heka_input_config
+
+    option_attributes Heka::Input::OPTIONS
+  end
+
+  class HekaSplitterConfig < HekaConfig
+    resource_name :heka_splitter_config
+    provides :heka_splitter_config
+
+    option_attributes Heka::Splitter::OPTIONS
+  end
+
+  class HekaDecoderConfig < HekaConfig
+    resource_name :heka_decoder_config
+    provides :heka_decoder_config
+
+    option_attributes Heka::Decoder::OPTIONS
+  end
+
+  class HekaFilterConfig < HekaConfig
+    resource_name :heka_filter_config
+    provides :heka_filter_config
+
+    option_attributes Heka::Filter::OPTIONS
+  end
+
+  class HekaEncoderConfig < HekaConfig
+    resource_name :heka_encoder_config
+    provides :heka_encoder_config
+
+    option_attributes Heka::Encoder::OPTIONS
+  end
+
+  class HekaOutputConfig < HekaConfig
+    resource_name :heka_output_config
+    provides :heka_output_config
+
+    option_attributes Heka::Output::OPTIONS
   end
 end
 
@@ -56,7 +116,7 @@ class Chef::Provider
         r = new_resource
 
         f = file ::File.join(r.path, "#{r.name}.toml") do
-          content TOML.dump(r.name => r.config)
+          content r.to_toml
           action a
         end
 
