@@ -112,7 +112,7 @@ module Heka
       instruction_limit: { kind_of: Integer },
       output_limit: { kind_of: Integer },
       module_directory: { kind_of: String },
-      config: { kind_of: Hash }
+      sandbox_config: { kind_of: Hash }
     }.freeze
   end
 

@@ -1,14 +1,36 @@
-heka_config 'StatsdInput'
 
-heka_config 'StatAccumInput'
+heka_input_config 'http_input' do
+  type 'HttpListenInput'
+  decoder 'json_decoder'
+  can_exit false
+  log_decode_failures false
+  send_decode_failures true
+  use_tls false
+  config address: '127.0.0.1:8325', use_tls: false
+end
 
-heka_config 'RstEncoder'
+heka_decoder_config 'json_decoder' do
+  type 'SandboxDecoder'
+  filename 'lua_decoders/json.lua'
+  preserve_data true
+  sandbox_config payload_keep: false, map_fields: false
+end
 
-heka_config 'Output' do
-  config(
-    type: 'FileOutput',
-    path: '/tmp/hekad.log',
-    message_matcher: 'TRUE',
-    encoder: 'RstEncoder'
-  )
+heka_filter_config 'counter' do
+  type 'CounterFilter'
+  message_matcher 'TRUE'
+  can_exit false
+  ticker_interval 5
+  use_buffering false
+end
+
+heka_encoder_config 'RstEncoder'
+
+heka_output_config 'log_output' do
+  type 'FileOutput'
+  message_matcher 'TRUE'
+  encoder 'RstEncoder'
+  can_exit false
+  use_buffering true
+  config path: '/var/tmp/heka-out.log', perm: '644'
 end

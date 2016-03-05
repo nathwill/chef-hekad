@@ -49,6 +49,11 @@ class Chef::Resource
     resource_name :heka_global_config
     provides :heka_global_config
 
+    # there can be only one
+    def name
+      'hekad'
+    end
+
     option_attributes Heka::Global::OPTIONS
   end
 
@@ -56,7 +61,11 @@ class Chef::Resource
     resource_name :heka_input_config
     provides :heka_input_config
 
+    attribute :use_tls, kind_of: [TrueClass, FalseClass]
+
     option_attributes Heka::Input::OPTIONS
+    option_attributes Heka::Sandbox::OPTIONS
+    option_attributes Heka::TLS::OPTIONS
   end
 
   class HekaSplitterConfig < HekaConfig
@@ -71,6 +80,7 @@ class Chef::Resource
     provides :heka_decoder_config
 
     option_attributes Heka::Decoder::OPTIONS
+    option_attributes Heka::Sandbox::OPTIONS
   end
 
   class HekaFilterConfig < HekaConfig
@@ -78,6 +88,8 @@ class Chef::Resource
     provides :heka_filter_config
 
     option_attributes Heka::Filter::OPTIONS
+    option_attributes Heka::Buffering::OPTIONS
+    option_attributes Heka::Sandbox::OPTIONS
   end
 
   class HekaEncoderConfig < HekaConfig
@@ -85,13 +97,19 @@ class Chef::Resource
     provides :heka_encoder_config
 
     option_attributes Heka::Encoder::OPTIONS
+    option_attributes Heka::Sandbox::OPTIONS
   end
 
   class HekaOutputConfig < HekaConfig
     resource_name :heka_output_config
     provides :heka_output_config
 
+    attribute :use_tls, kind_of: [TrueClass, FalseClass]
+
     option_attributes Heka::Output::OPTIONS
+    option_attributes Heka::Sandbox::OPTIONS
+    option_attributes Heka::Buffering::OPTIONS
+    option_attributes Heka::TLS::OPTIONS
   end
 end
 

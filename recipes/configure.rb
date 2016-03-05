@@ -20,7 +20,10 @@ directory node['heka']['config_dir'] do
   recursive true
 end
 
+config = node['heka']['config']
+
 # Install global configuration
-heka_config 'hekad' do
-  config node['heka']['config']
+heka_global_config 'hekad' do
+  maxprocs config['maxprocs']
+  base_dir config['base_dir']
 end
