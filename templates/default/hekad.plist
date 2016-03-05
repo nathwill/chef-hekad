@@ -12,7 +12,7 @@
 
     <key>UserName</key>
 
-    <string>heka</string>
+    <string><%= @user %></string>
 
     <key>ProgramArguments</key>
 
