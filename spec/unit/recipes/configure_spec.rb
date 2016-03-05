@@ -29,7 +29,7 @@ describe 'hekad::configure' do
     end
 
     it 'installs the hekad global configuration' do
-      expect(chef_run).to create_heka_config 'hekad'
+      expect(chef_run).to create_heka_global_config 'hekad'
     end
 
     it 'converges successfully' do

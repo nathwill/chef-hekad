@@ -50,7 +50,7 @@ class Chef::Resource
     provides :heka_global_config
 
     # there can be only one
-    def name
+    def name(_ = nil)
       'hekad'
     end
 
