@@ -84,7 +84,6 @@ module Heka
       ticker_interval: { kind_of: Integer },
       can_exit: { kind_of: [TrueClass, FalseClass] },
       use_buffering: { kind_of: [TrueClass, FalseClass] },
-      buffering: { kind_of: Hash }
     }.freeze
   end
 
