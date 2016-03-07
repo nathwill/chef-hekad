@@ -91,7 +91,7 @@ class Chef::Resource
 
       if type =~ /^Sandbox(Input|Decoder|Filter|Encoder|Output)/
         Heka::Sandbox::OPTIONS.each_pair { |k, _| conf[k] = send(k) }
-        conf['config'] = conf.delete('sandbox_config')
+        conf['config'] = conf.delete(:sandbox_config)
       end
 
       if conf['use_tls']
@@ -139,7 +139,7 @@ class Chef::Resource
 
       if type =~ /^Sandbox(Input|Decoder|Filter|Encoder|Output)/
         Heka::Sandbox::OPTIONS.each_pair { |k, _| conf[k] = send(k) }
-        conf['config'] = conf.delete('sandbox_config')
+        conf['config'] = conf.delete(:sandbox_config)
       end
 
       conf.delete_if { |_, v| v.nil? }
@@ -172,7 +172,7 @@ class Chef::Resource
 
       if type =~ /^Sandbox(Input|Decoder|Filter|Encoder|Output)/
         Heka::Sandbox::OPTIONS.each_pair { |k, _| conf[k] = send(k) }
-        conf['config'] = conf.delete('sandbox_config')
+        conf['config'] = conf.delete(:sandbox_config)
       end
 
       conf.delete_if { |_, v| v.nil? }
@@ -197,7 +197,7 @@ class Chef::Resource
 
       if type =~ /^Sandbox(Input|Decoder|Filter|Encoder|Output)/
         Heka::Sandbox::OPTIONS.each_pair { |k, _| conf[k] = send(k) }
-        conf['config'] = conf.delete('sandbox_config')
+        conf['config'] = conf.delete(:sandbox_config)
       end
 
       conf.delete_if { |_, v| v.nil? }
@@ -227,7 +227,7 @@ class Chef::Resource
 
       if type =~ /^Sandbox(Input|Decoder|Filter|Encoder|Output)/
         Heka::Sandbox::OPTIONS.each_pair { |k, _| conf[k] = send(k) }
-        conf['config'] = conf.delete('sandbox_config')
+        conf['config'] = conf.delete(:sandbox_config)
       end
 
       if conf['use_buffering']
