@@ -133,6 +133,7 @@ class Chef::Resource
     option_attributes Heka::Decoder::OPTIONS
     option_attributes Heka::Sandbox::OPTIONS
 
+    # rubocop: disable MethodLength
     def to_toml
       conf = {}.merge config
       conf[:type] = type
@@ -147,6 +148,7 @@ class Chef::Resource
       conf.delete_if { |_, v| v.nil? }
       TOML.dump(name => conf)
     end
+    # rubocop: enable MethodLength
   end
 
   class HekaFilterConfig < HekaConfig
@@ -192,6 +194,7 @@ class Chef::Resource
     option_attributes Heka::Encoder::OPTIONS
     option_attributes Heka::Sandbox::OPTIONS
 
+    # rubocop: disable MethodLength
     def to_toml
       conf = {}.merge config
       conf[:type] = type
@@ -206,6 +209,7 @@ class Chef::Resource
       conf.delete_if { |_, v| v.nil? }
       TOML.dump(name => conf)
     end
+    # rubocop: enable MethodLength
   end
 
   class HekaOutputConfig < HekaConfig
