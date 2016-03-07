@@ -83,7 +83,7 @@ module Heka
       message_signer: { kind_of: String },
       ticker_interval: { kind_of: Integer },
       can_exit: { kind_of: [TrueClass, FalseClass] },
-      use_buffering: { kind_of: [TrueClass, FalseClass] },
+      use_buffering: { kind_of: [TrueClass, FalseClass] }
     }.freeze
   end
 
