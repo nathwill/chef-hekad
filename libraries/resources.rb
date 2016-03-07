@@ -95,6 +95,8 @@ class Chef::Resource
       end
 
       if conf[:use_tls]
+        conf[:tls] = {}
+
         Heka::TLS::OPTIONS.each_pair do |k, _|
           conf[:tls][k] = send(k) unless send(k).nil?
         end
@@ -164,6 +166,8 @@ class Chef::Resource
       Heka::Filter::OPTIONS.each_pair { |k, _| conf[k] = send(k) }
 
       if conf[:use_buffering]
+        conf[:buffering] = {}
+
         Heka::Buffering::OPTIONS.each_pair do |k, _|
           conf[:buffering][k] = send(k) unless send(k).nil?
         end
@@ -230,12 +234,16 @@ class Chef::Resource
       end
 
       if conf[:use_buffering]
+        conf[:buffering] = {}
+
         Heka::Buffering::OPTIONS.each_pair do |k, _|
           conf[:buffering][k] = send(k) unless send(k).nil?
         end
       end
 
       if conf[:use_tls]
+        conf[:tls] = {}
+
         Heka::TLS::OPTIONS.each_pair do |k, _|
           conf[:tls][k] = send(k) unless send(k).nil?
         end

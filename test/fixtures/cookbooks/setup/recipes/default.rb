@@ -5,8 +5,7 @@ heka_input_config 'http_input' do
   can_exit false
   log_decode_failures false
   send_decode_failures true
-  use_tls false
-  config address: '127.0.0.1:8325', use_tls: false
+  config address: '127.0.0.1:8325'
 end
 
 heka_decoder_config 'json_decoder' do
@@ -32,5 +31,6 @@ heka_output_config 'log_output' do
   encoder 'RstEncoder'
   can_exit false
   use_buffering true
+  full_action 'block'
   config path: '/var/tmp/heka-out.log', perm: '644'
 end
