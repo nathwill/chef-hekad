@@ -1,5 +1,5 @@
 
-heka_input_config 'http_input' do
+heka_input 'http_input' do
   type 'HttpListenInput'
   decoder 'json_decoder'
   can_exit false
@@ -8,14 +8,14 @@ heka_input_config 'http_input' do
   config address: '127.0.0.1:8325'
 end
 
-heka_decoder_config 'json_decoder' do
+heka_decoder 'json_decoder' do
   type 'SandboxDecoder'
   filename 'lua_decoders/json.lua'
   preserve_data true
   sandbox_config payload_keep: false, map_fields: false
 end
 
-heka_filter_config 'counter' do
+heka_filter 'counter' do
   type 'CounterFilter'
   message_matcher 'TRUE'
   can_exit false
@@ -23,9 +23,9 @@ heka_filter_config 'counter' do
   use_buffering false
 end
 
-heka_encoder_config 'RstEncoder'
+heka_encoder 'RstEncoder'
 
-heka_output_config 'log_output' do
+heka_output 'log_output' do
   type 'FileOutput'
   message_matcher 'TRUE'
   encoder 'RstEncoder'

@@ -48,14 +48,9 @@ class Chef::Resource
     end
   end
 
-  class HekaGlobalConfig < HekaConfig
-    resource_name :heka_global_config
-    provides :heka_global_config
-
-    # there can be only one
-    def name(_ = nil)
-      'hekad'
-    end
+  class HekaGlobal < HekaConfig
+    resource_name :heka_global
+    provides :heka_global
 
     option_attributes Heka::Global::OPTIONS
 
@@ -66,13 +61,13 @@ class Chef::Resource
       Heka::Global::OPTIONS.each_pair { |k, _| conf[k] = send(k) }
 
       conf.delete_if { |_, v| v.nil? }
-      TOML.dump(name => conf)
+      TOML.dump(hekad: conf)
     end
   end
 
-  class HekaInputConfig < HekaConfig
-    resource_name :heka_input_config
-    provides :heka_input_config
+  class HekaInput < HekaConfig
+    resource_name :heka_input
+    provides :heka_input
 
     attribute :use_tls, kind_of: [TrueClass, FalseClass]
 
@@ -109,9 +104,9 @@ class Chef::Resource
     # rubocop: enable MethodLength
   end
 
-  class HekaSplitterConfig < HekaConfig
-    resource_name :heka_splitter_config
-    provides :heka_splitter_config
+  class HekaSplitter < HekaConfig
+    resource_name :heka_splitter
+    provides :heka_splitter
 
     option_attributes Heka::Splitter::OPTIONS
 
@@ -126,9 +121,9 @@ class Chef::Resource
     end
   end
 
-  class HekaDecoderConfig < HekaConfig
-    resource_name :heka_decoder_config
-    provides :heka_decoder_config
+  class HekaDecoder < HekaConfig
+    resource_name :heka_decoder
+    provides :heka_decoder
 
     option_attributes Heka::Decoder::OPTIONS
     option_attributes Heka::Sandbox::OPTIONS
@@ -151,9 +146,9 @@ class Chef::Resource
     # rubocop: enable MethodLength
   end
 
-  class HekaFilterConfig < HekaConfig
-    resource_name :heka_filter_config
-    provides :heka_filter_config
+  class HekaFilter < HekaConfig
+    resource_name :heka_filter
+    provides :heka_filter
 
     option_attributes Heka::Filter::OPTIONS
     option_attributes Heka::Buffering::OPTIONS
@@ -187,9 +182,9 @@ class Chef::Resource
     # rubocop: enable MethodLength
   end
 
-  class HekaEncoderConfig < HekaConfig
-    resource_name :heka_encoder_config
-    provides :heka_encoder_config
+  class HekaEncoder < HekaConfig
+    resource_name :heka_encoder
+    provides :heka_encoder
 
     option_attributes Heka::Encoder::OPTIONS
     option_attributes Heka::Sandbox::OPTIONS
@@ -212,9 +207,9 @@ class Chef::Resource
     # rubocop: enable MethodLength
   end
 
-  class HekaOutputConfig < HekaConfig
-    resource_name :heka_output_config
-    provides :heka_output_config
+  class HekaOutput < HekaConfig
+    resource_name :heka_output
+    provides :heka_output
 
     attribute :use_tls, kind_of: [TrueClass, FalseClass]
 
@@ -277,12 +272,12 @@ class Chef::Provider
 
     %w(
       heka_config
-      heka_global_config
-      heka_input_config
-      heka_decoder_config
-      heka_filter_config
-      heka_encoder_config
-      heka_output_config
+      heka_global
+      heka_input
+      heka_decoder
+      heka_filter
+      heka_encoder
+      heka_output
     ).map(&:to_sym).each { |r| provides r }
 
     %w( create delete ).map(&:to_sym).each do |a|

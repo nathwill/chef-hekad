@@ -23,7 +23,7 @@ end
 config = node['heka']['config']
 
 # Install global configuration
-heka_global_config 'hekad' do
+heka_global 'hekad' do
   maxprocs config['maxprocs']
   base_dir config['base_dir']
 end
