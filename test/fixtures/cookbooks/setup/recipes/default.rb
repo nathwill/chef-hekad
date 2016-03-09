@@ -1,36 +1,60 @@
-
-heka_input 'http_input' do
-  type 'HttpListenInput'
-  decoder 'json_decoder'
-  can_exit false
-  log_decode_failures false
-  send_decode_failures true
-  config address: '127.0.0.1:8325'
+# Test misc heka resources
+heka_config 'my_ip' do
+  config(
+    type: 'HttpInput',
+    url: 'https://ipv4.icanhazip.com/',
+    ticker_interval: 5,
+    success_severity: 6,
+    error_severity: 1,
+    decoder: "",
+    headers: { 'user-agent' => 'Mozilla Heka' },
+  )
 end
 
-heka_decoder 'json_decoder' do
+heka_splitter 'split_on_space' do
+  type 'TokenSplitter'
+  deliver_incomplete_final false
+  config delimiter: ' '
+end
+
+heka_input 'load_avg_input' do
+  type 'FilePollingInput'
+  decoder 'load_avg_decoder'
+  config file_path: '/proc/loadavg', ticker_interval: 1
+end
+
+heka_decoder 'load_avg_decoder' do
   type 'SandboxDecoder'
-  filename 'lua_decoders/json.lua'
-  preserve_data true
-  sandbox_config payload_keep: false, map_fields: false
+  filename 'lua_decoders/linux_loadavg.lua'
+  sandbox_config payload_keep: false
 end
 
-heka_filter 'counter' do
-  type 'CounterFilter'
-  message_matcher 'TRUE'
-  can_exit false
+heka_filter 'load_avg_filter' do
+  type 'SandboxFilter'
+  filename 'lua_filters/loadavg.lua'
   ticker_interval 5
-  use_buffering false
+  preserve_data true
+  message_matcher "Type == 'stats.loadavg'"
+  sandbox_config preservation_version: 1
+  use_buffering true
+  buffering_config do
+    max_file_size 1024 ** 2
+    max_buffer_size 1024 ** 3
+    full_action 'block'
+  end
 end
 
 heka_encoder 'RstEncoder'
 
-heka_output 'log_output' do
+heka_output 'debug_output' do
   type 'FileOutput'
   message_matcher 'TRUE'
   encoder 'RstEncoder'
-  can_exit false
-  use_buffering true
-  full_action 'block'
-  config path: '/var/tmp/heka-out.log', perm: '644'
+  config path: '/tmp/heka-debug.log'
+  use_buffering  true
+  buffering_config do
+    max_file_size 1024 ** 2
+    max_buffer_size 1024 ** 3
+    full_action 'block'
+  end
 end

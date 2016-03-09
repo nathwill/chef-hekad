@@ -42,7 +42,7 @@ class Chef::Resource
 
     def to_toml
       conf = {}.merge config
-      conf[:type] = type
+      conf[:type] ||= type || config['type']
       conf.delete_if { |_, v| v.nil? }
       TOML.dump(name => conf)
     end
@@ -259,6 +259,7 @@ class Chef::Provider
       heka_config
       heka_global
       heka_input
+      heka_splitter
       heka_decoder
       heka_filter
       heka_encoder
