@@ -55,7 +55,6 @@ describe 'hekad::install' do
 
     it 'installs homebrew package' do
       expect(chef_run).to install_homebrew_cask 'heka'
-      expect(chef_run).to install_homebrew_package 'heka'
     end
   end
 end
