@@ -26,7 +26,7 @@ describe 'hekad::default' do
     end
 
     it 'installs/configures package and service' do
-      %w( install configure service ).each do |r|
+      %w( install configure service reload ).each do |r|
         expect(chef_run).to include_recipe "hekad::#{r}"
       end
     end

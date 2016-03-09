@@ -43,18 +43,26 @@ describe 'hekad::service' do
   end
 
   it 'creates the heka user' do
-    expect(chef_run).to create_user 'heka'
+    expect(chef_run).to create_user('heka').with(
+      shell: '/bin/false',
+      system: true
+    )
   end
 
   it 'creates the heka group' do
-    expect(chef_run).to create_group 'heka'
+    expect(chef_run).to create_group('heka').with(system: true)
   end
 
   it 'creates the heka base_dir' do
-    expect(chef_run).to create_directory '/var/cache/hekad'
+    expect(chef_run).to create_directory('/var/cache/hekad').with(
+      owner: 'heka',
+      group: 'heka',
+      recursive: true,
+    )
   end
 
   it 'manages the heka service' do
+    expect(chef_run).to delete_file '/etc/init.d/heka'
     expect(chef_run).to disable_service 'heka'
     expect(chef_run).to stop_service 'heka'
   end
