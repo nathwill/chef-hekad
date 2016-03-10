@@ -20,7 +20,7 @@ module Hekad
   class Handlers
     def conditionally_reload(run_context)
       updated = run_context.resource_collection.detect do |r|
-        r.is_a?(Chef::Resource::HekaConfig) && r.updated_by_last_action?
+        r.is_a?(HekaConfig::Resource) && r.updated_by_last_action?
       end
 
       # Restart service if any of our configurations changed
