@@ -23,8 +23,8 @@ require 'chef/mixin/params_validate'
 
 require_relative 'helpers'
 
-class Chef::Resource
-  class HekaConfig < Chef::Resource::LWRPBase
+class HekaConfig
+  class Resource < Chef::Resource::LWRPBase
     resource_name :heka_config
     provides :heka_config
 
@@ -48,201 +48,7 @@ class Chef::Resource
     end
   end
 
-  class HekaGlobal < HekaConfig
-    resource_name :heka_global
-    provides :heka_global
-
-    option_attributes Heka::Global::OPTIONS
-
-    def to_toml
-      conf = {}.merge config
-      conf[:type] = type
-      Heka::Global::OPTIONS.each_pair { |k, _| conf[k] = send(k) }
-      conf.delete_if { |_, v| v.nil? }
-      TOML.dump(hekad: conf)
-    end
-  end
-
-  class HekaInput < HekaConfig
-    resource_name :heka_input
-    provides :heka_input
-
-    attribute :use_tls, kind_of: [TrueClass, FalseClass]
-
-    option_attributes Heka::Input::OPTIONS
-    option_attributes Heka::Sandbox::OPTIONS
-    option_attributes Heka::TLS::OPTIONS
-
-    def tls_config
-      yield
-    end
-
-    # rubocop: disable AbcSize
-    # rubocop: disable MethodLength
-    def to_toml
-      conf = {}.merge config
-      conf[:type] = type
-      conf[:use_tls] = use_tls
-      Heka::Input::OPTIONS.each_pair { |k, _| conf[k] = send(k) }
-      if type =~ /^Sandbox(Input|Decoder|Filter|Encoder|Output)/
-        Heka::Sandbox::OPTIONS.each_pair { |k, _| conf[k] = send(k) }
-        conf[:config] = conf.delete(:sandbox_config)
-      end
-      if conf[:use_tls]
-        conf[:tls] = {}
-        Heka::TLS::OPTIONS.each_pair do |k, _|
-          conf[:tls][k] = send(k) unless send(k).nil?
-        end
-      end
-      conf.delete_if { |_, v| v.nil? }
-      TOML.dump(name => conf)
-    end
-    # rubocop: enable AbcSize
-    # rubocop: enable MethodLength
-  end
-
-  class HekaSplitter < HekaConfig
-    resource_name :heka_splitter
-    provides :heka_splitter
-
-    option_attributes Heka::Splitter::OPTIONS
-
-    def to_toml
-      conf = {}.merge config
-      conf[:type] = type
-      Heka::Splitter::OPTIONS.each_pair { |k, _| conf[k] = send(k) }
-      conf.delete_if { |_, v| v.nil? }
-      TOML.dump(name => conf)
-    end
-  end
-
-  class HekaDecoder < HekaConfig
-    resource_name :heka_decoder
-    provides :heka_decoder
-
-    option_attributes Heka::Decoder::OPTIONS
-    option_attributes Heka::Sandbox::OPTIONS
-
-    def to_toml
-      conf = {}.merge config
-      conf[:type] = type
-      Heka::Decoder::OPTIONS.each_pair { |k, _| conf[k] = send(k) }
-      if type =~ /^Sandbox(Input|Decoder|Filter|Encoder|Output)/
-        Heka::Sandbox::OPTIONS.each_pair { |k, _| conf[k] = send(k) }
-        conf[:config] = conf.delete(:sandbox_config)
-      end
-      conf.delete_if { |_, v| v.nil? }
-      TOML.dump(name => conf)
-    end
-  end
-
-  class HekaFilter < HekaConfig
-    resource_name :heka_filter
-    provides :heka_filter
-
-    option_attributes Heka::Filter::OPTIONS
-    option_attributes Heka::Buffering::OPTIONS
-    option_attributes Heka::Sandbox::OPTIONS
-
-    def buffering_config
-      yield
-    end
-
-    # rubocop: disable AbcSize
-    # rubocop: disable MethodLength
-    def to_toml
-      conf = {}.merge config
-      conf[:type] = type
-      Heka::Filter::OPTIONS.each_pair { |k, _| conf[k] = send(k) }
-      if conf[:use_buffering]
-        conf[:buffering] = {}
-        Heka::Buffering::OPTIONS.each_pair do |k, _|
-          conf[:buffering][k] = send(k) unless send(k).nil?
-        end
-      end
-      if type =~ /^Sandbox(Input|Decoder|Filter|Encoder|Output)/
-        Heka::Sandbox::OPTIONS.each_pair { |k, _| conf[k] = send(k) }
-        conf[:config] = conf.delete(:sandbox_config)
-      end
-      conf.delete_if { |_, v| v.nil? }
-      TOML.dump(name => conf)
-    end
-    # rubocop: enable AbcSize
-    # rubocop: enable MethodLength
-  end
-
-  class HekaEncoder < HekaConfig
-    resource_name :heka_encoder
-    provides :heka_encoder
-
-    option_attributes Heka::Encoder::OPTIONS
-    option_attributes Heka::Sandbox::OPTIONS
-
-    def to_toml
-      conf = {}.merge config
-      conf[:type] = type
-      Heka::Encoder::OPTIONS.each_pair { |k, _| conf[k] = send(k) }
-      if type =~ /^Sandbox(Input|Decoder|Filter|Encoder|Output)/
-        Heka::Sandbox::OPTIONS.each_pair { |k, _| conf[k] = send(k) }
-        conf[:config] = conf.delete(:sandbox_config)
-      end
-      conf.delete_if { |_, v| v.nil? }
-      TOML.dump(name => conf)
-    end
-  end
-
-  class HekaOutput < HekaConfig
-    resource_name :heka_output
-    provides :heka_output
-
-    attribute :use_tls, kind_of: [TrueClass, FalseClass]
-
-    option_attributes Heka::Output::OPTIONS
-    option_attributes Heka::Sandbox::OPTIONS
-    option_attributes Heka::Buffering::OPTIONS
-    option_attributes Heka::TLS::OPTIONS
-
-    def tls_config
-      yield
-    end
-
-    def buffering_config
-      yield
-    end
-
-    # rubocop: disable AbcSize
-    # rubocop: disable MethodLength
-    def to_toml
-      conf = {}.merge config
-      conf[:type] = type
-      conf[:use_tls] = use_tls
-      Heka::Output::OPTIONS.each_pair { |k, _| conf[k] = send(k) }
-      if type =~ /^Sandbox(Input|Decoder|Filter|Encoder|Output)/
-        Heka::Sandbox::OPTIONS.each_pair { |k, _| conf[k] = send(k) }
-        conf[:config] = conf.delete(:sandbox_config)
-      end
-      if conf[:use_buffering]
-        conf[:buffering] = {}
-        Heka::Buffering::OPTIONS.each_pair do |k, _|
-          conf[:buffering][k] = send(k) unless send(k).nil?
-        end
-      end
-      if conf[:use_tls]
-        conf[:tls] = {}
-        Heka::TLS::OPTIONS.each_pair do |k, _|
-          conf[:tls][k] = send(k) unless send(k).nil?
-        end
-      end
-      conf.delete_if { |_, v| v.nil? }
-      TOML.dump(name => conf)
-    end
-    # rubocop: enable AbcSize
-    # rubocop: enable MethodLength
-  end
-end
-
-class Chef::Provider
-  class HekaConfig < Chef::Provider::LWRPBase
+  class Provider < Chef::Provider::LWRPBase
     def initialize(*args)
       super
       Chef::Resource::ChefGem.new('toml-rb', run_context).run_action(:install)
@@ -279,4 +85,196 @@ class Chef::Provider
       end
     end
   end
+end
+
+class HekaGlobal < HekaConfig::Resource
+  resource_name :heka_global
+  provides :heka_global
+
+  option_attributes Heka::Global::OPTIONS
+
+  def to_toml
+    conf = {}.merge config
+    conf[:type] = type
+    Heka::Global::OPTIONS.each_pair { |k, _| conf[k] = send(k) }
+    conf.delete_if { |_, v| v.nil? }
+    TOML.dump(hekad: conf)
+  end
+end
+
+class HekaInput < HekaConfig::Resource
+  resource_name :heka_input
+  provides :heka_input
+
+  attribute :use_tls, kind_of: [TrueClass, FalseClass]
+
+  option_attributes Heka::Input::OPTIONS
+  option_attributes Heka::Sandbox::OPTIONS
+  option_attributes Heka::TLS::OPTIONS
+
+  def tls_config
+    yield
+  end
+
+  # rubocop: disable AbcSize
+  # rubocop: disable MethodLength
+  def to_toml
+    conf = {}.merge config
+    conf[:type] = type
+    conf[:use_tls] = use_tls
+    Heka::Input::OPTIONS.each_pair { |k, _| conf[k] = send(k) }
+    if type =~ /^Sandbox(Input|Decoder|Filter|Encoder|Output)/
+      Heka::Sandbox::OPTIONS.each_pair { |k, _| conf[k] = send(k) }
+      conf[:config] = conf.delete(:sandbox_config)
+    end
+    if conf[:use_tls]
+      conf[:tls] = {}
+      Heka::TLS::OPTIONS.each_pair do |k, _|
+        conf[:tls][k] = send(k) unless send(k).nil?
+      end
+    end
+    conf.delete_if { |_, v| v.nil? }
+    TOML.dump(name => conf)
+  end
+  # rubocop: enable AbcSize
+  # rubocop: enable MethodLength
+end
+
+class HekaSplitter < HekaConfig::Resource
+  resource_name :heka_splitter
+  provides :heka_splitter
+
+  option_attributes Heka::Splitter::OPTIONS
+
+  def to_toml
+    conf = {}.merge config
+    conf[:type] = type
+    Heka::Splitter::OPTIONS.each_pair { |k, _| conf[k] = send(k) }
+    conf.delete_if { |_, v| v.nil? }
+    TOML.dump(name => conf)
+  end
+end
+
+class HekaDecoder < HekaConfig::Resource
+  resource_name :heka_decoder
+  provides :heka_decoder
+
+  option_attributes Heka::Decoder::OPTIONS
+  option_attributes Heka::Sandbox::OPTIONS
+
+  def to_toml
+    conf = {}.merge config
+    conf[:type] = type
+    Heka::Decoder::OPTIONS.each_pair { |k, _| conf[k] = send(k) }
+    if type =~ /^Sandbox(Input|Decoder|Filter|Encoder|Output)/
+      Heka::Sandbox::OPTIONS.each_pair { |k, _| conf[k] = send(k) }
+      conf[:config] = conf.delete(:sandbox_config)
+    end
+    conf.delete_if { |_, v| v.nil? }
+    TOML.dump(name => conf)
+  end
+end
+
+class HekaFilter < HekaConfig::Resource
+  resource_name :heka_filter
+  provides :heka_filter
+
+  option_attributes Heka::Filter::OPTIONS
+  option_attributes Heka::Buffering::OPTIONS
+  option_attributes Heka::Sandbox::OPTIONS
+
+  def buffering_config
+    yield
+  end
+
+  # rubocop: disable AbcSize
+  # rubocop: disable MethodLength
+  def to_toml
+    conf = {}.merge config
+    conf[:type] = type
+    Heka::Filter::OPTIONS.each_pair { |k, _| conf[k] = send(k) }
+    if conf[:use_buffering]
+      conf[:buffering] = {}
+      Heka::Buffering::OPTIONS.each_pair do |k, _|
+        conf[:buffering][k] = send(k) unless send(k).nil?
+      end
+    end
+    if type =~ /^Sandbox(Input|Decoder|Filter|Encoder|Output)/
+      Heka::Sandbox::OPTIONS.each_pair { |k, _| conf[k] = send(k) }
+      conf[:config] = conf.delete(:sandbox_config)
+    end
+    conf.delete_if { |_, v| v.nil? }
+    TOML.dump(name => conf)
+  end
+  # rubocop: enable AbcSize
+  # rubocop: enable MethodLength
+end
+
+class HekaEncoder < HekaConfig::Resource
+  resource_name :heka_encoder
+  provides :heka_encoder
+
+  option_attributes Heka::Encoder::OPTIONS
+  option_attributes Heka::Sandbox::OPTIONS
+
+  def to_toml
+    conf = {}.merge config
+    conf[:type] = type
+    Heka::Encoder::OPTIONS.each_pair { |k, _| conf[k] = send(k) }
+    if type =~ /^Sandbox(Input|Decoder|Filter|Encoder|Output)/
+      Heka::Sandbox::OPTIONS.each_pair { |k, _| conf[k] = send(k) }
+      conf[:config] = conf.delete(:sandbox_config)
+    end
+    conf.delete_if { |_, v| v.nil? }
+    TOML.dump(name => conf)
+  end
+end
+
+class HekaOutput < HekaConfig::Resource
+  resource_name :heka_output
+  provides :heka_output
+
+  attribute :use_tls, kind_of: [TrueClass, FalseClass]
+
+  option_attributes Heka::Output::OPTIONS
+  option_attributes Heka::Sandbox::OPTIONS
+  option_attributes Heka::Buffering::OPTIONS
+  option_attributes Heka::TLS::OPTIONS
+
+  def tls_config
+    yield
+  end
+
+  def buffering_config
+    yield
+  end
+
+  # rubocop: disable AbcSize
+  # rubocop: disable MethodLength
+  def to_toml
+    conf = {}.merge config
+    conf[:type] = type
+    conf[:use_tls] = use_tls
+    Heka::Output::OPTIONS.each_pair { |k, _| conf[k] = send(k) }
+    if type =~ /^Sandbox(Input|Decoder|Filter|Encoder|Output)/
+      Heka::Sandbox::OPTIONS.each_pair { |k, _| conf[k] = send(k) }
+      conf[:config] = conf.delete(:sandbox_config)
+    end
+    if conf[:use_buffering]
+      conf[:buffering] = {}
+      Heka::Buffering::OPTIONS.each_pair do |k, _|
+        conf[:buffering][k] = send(k) unless send(k).nil?
+      end
+    end
+    if conf[:use_tls]
+      conf[:tls] = {}
+      Heka::TLS::OPTIONS.each_pair do |k, _|
+        conf[:tls][k] = send(k) unless send(k).nil?
+      end
+    end
+    conf.delete_if { |_, v| v.nil? }
+    TOML.dump(name => conf)
+  end
+  # rubocop: enable AbcSize
+  # rubocop: enable MethodLength
 end
