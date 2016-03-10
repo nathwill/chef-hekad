@@ -25,12 +25,14 @@ user node['heka']['user'] do
   shell '/bin/false'
   system true
   gid node['heka']['user']
+  action :create
 end
 
 directory node['heka']['config']['base_dir'] do
   owner node['heka']['user']
   group node['heka']['user']
   recursive true
+  action :create
 end
 
 # systemd
@@ -49,6 +51,7 @@ systemd_service 'hekad' do
   end
   only_if { Heka::Init.systemd? }
   notifies :restart, 'service[hekad]', :delayed
+  action :create
 end
 
 # upstart
@@ -57,6 +60,7 @@ template '/etc/init/hekad.conf' do
   variables user: node['heka']['user'], conf_dir: node['heka']['config_dir']
   only_if { Heka::Init.upstart? }
   notifies :restart, 'service[hekad]', :delayed
+  action :create
 end
 
 # sysv
@@ -66,6 +70,7 @@ template '/etc/init.d/hekad' do
   variables user: node['heka']['user'], conf_dir: node['heka']['config_dir']
   not_if { Heka::Init.systemd? || Heka::Init.upstart? || platform?('mac_os_x') }
   notifies :restart, 'service[hekad]', :delayed
+  action :create
 end
 
 # launchd
@@ -75,6 +80,7 @@ template '/Library/LaunchDaemons/hekad.plist' do
   variables user: node['heka']['user'], conf_dir: node['heka']['config_dir']
   only_if { platform?('mac_os_x') }
   notifies :restart, 'service[hekad]', :delayed
+  action :create
 end
 
 file '/etc/init.d/heka' do

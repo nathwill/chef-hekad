@@ -56,5 +56,9 @@ describe 'hekad::install' do
     it 'installs homebrew package' do
       expect(chef_run).to install_homebrew_cask 'heka'
     end
+
+    it 'converges successfully' do
+      chef_run # This should not raise an error
+    end
   end
 end
