@@ -1,4 +1,6 @@
+require 'toml'
 require 'chefspec'
 require 'chefspec/berkshelf'
 
-ChefSpec::Coverage.start!
+# Require all our libraries
+Dir.glob('libraries/*.rb').shuffle.each { |f| require File.expand_path(f) }
