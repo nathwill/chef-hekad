@@ -115,7 +115,7 @@ module Heka
     }.freeze
   end
 
-  module Restarting
+  module Restart
     OPTIONS ||= {
       max_jitter: { kind_of: String },
       max_delay: { kind_of: String },

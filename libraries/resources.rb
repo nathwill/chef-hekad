@@ -72,6 +72,7 @@ class HekaConfig
     option_attributes Heka::Input::OPTIONS
     option_attributes Heka::Sandbox::OPTIONS
     option_attributes Heka::TLS::OPTIONS
+    option_attributes Heka::Restart::OPTIONS
 
     def tls_config
       yield
@@ -84,6 +85,7 @@ class HekaConfig
       conf[:type] = type
       conf[:use_tls] = use_tls
       Heka::Input::OPTIONS.each_pair { |k, _| conf[k] = send(k) }
+      Heka::Restart::OPTIONS.each_pair { |k, _| conf[k] = send(k) }
       if type =~ /^Sandbox(Input|Decoder|Filter|Encoder|Output)/
         Heka::Sandbox::OPTIONS.each_pair { |k, _| conf[k] = send(k) }
         conf[:config] = conf.delete(:sandbox_config)
@@ -106,10 +108,12 @@ class HekaConfig
     provides :heka_splitter
 
     option_attributes Heka::Splitter::OPTIONS
+    option_attributes Heka::Restart::OPTIONS
 
     def to_toml
       conf = {}.merge config
       conf[:type] = type
+      Heka::Restart::OPTIONS.each_pair { |k, _| conf[k] = send(k) }
       Heka::Splitter::OPTIONS.each_pair { |k, _| conf[k] = send(k) }
       conf.delete_if { |_, v| v.nil? }
       TOML.dump(name => conf)
@@ -122,11 +126,14 @@ class HekaConfig
 
     option_attributes Heka::Decoder::OPTIONS
     option_attributes Heka::Sandbox::OPTIONS
+    option_attributes Heka::Restart::OPTIONS
 
+    # rubocop: disable AbcSize
     def to_toml
       conf = {}.merge config
       conf[:type] = type
       Heka::Decoder::OPTIONS.each_pair { |k, _| conf[k] = send(k) }
+      Heka::Restart::OPTIONS.each_pair { |k, _| conf[k] = send(k) }
       if type =~ /^Sandbox(Input|Decoder|Filter|Encoder|Output)/
         Heka::Sandbox::OPTIONS.each_pair { |k, _| conf[k] = send(k) }
         conf[:config] = conf.delete(:sandbox_config)
@@ -134,6 +141,7 @@ class HekaConfig
       conf.delete_if { |_, v| v.nil? }
       TOML.dump(name => conf)
     end
+    # rubocop: enable AbcSize
   end
 
   class Filter < Base
@@ -143,6 +151,7 @@ class HekaConfig
     option_attributes Heka::Filter::OPTIONS
     option_attributes Heka::Buffering::OPTIONS
     option_attributes Heka::Sandbox::OPTIONS
+    option_attributes Heka::Restart::OPTIONS
 
     def buffering_config
       yield
@@ -154,6 +163,7 @@ class HekaConfig
       conf = {}.merge config
       conf[:type] = type
       Heka::Filter::OPTIONS.each_pair { |k, _| conf[k] = send(k) }
+      Heka::Restart::OPTIONS.each_pair { |k, _| conf[k] = send(k) }
       if conf[:use_buffering]
         conf[:buffering] = {}
         Heka::Buffering::OPTIONS.each_pair do |k, _|
@@ -177,10 +187,12 @@ class HekaConfig
 
     option_attributes Heka::Encoder::OPTIONS
     option_attributes Heka::Sandbox::OPTIONS
-
+    option_attributes Heka::Restart::OPTIONS
+    # rubocop: disable AbcSize
     def to_toml
       conf = {}.merge config
       conf[:type] = type
+      Heka::Restart::OPTIONS.each_pair { |k, _| conf[k] = send(k) }
       Heka::Encoder::OPTIONS.each_pair { |k, _| conf[k] = send(k) }
       if type =~ /^Sandbox(Input|Decoder|Filter|Encoder|Output)/
         Heka::Sandbox::OPTIONS.each_pair { |k, _| conf[k] = send(k) }
@@ -189,6 +201,7 @@ class HekaConfig
       conf.delete_if { |_, v| v.nil? }
       TOML.dump(name => conf)
     end
+    # rubocop: enable AbcSize
   end
 
   class Output < Base
@@ -201,6 +214,7 @@ class HekaConfig
     option_attributes Heka::Sandbox::OPTIONS
     option_attributes Heka::Buffering::OPTIONS
     option_attributes Heka::TLS::OPTIONS
+    option_attributes Heka::Restart::OPTIONS
 
     def tls_config
       yield
@@ -216,6 +230,7 @@ class HekaConfig
       conf = {}.merge config
       conf[:type] = type
       conf[:use_tls] = use_tls
+      Heka::Restart::OPTIONS.each_pair { |k, _| conf[k] = send(k) }
       Heka::Output::OPTIONS.each_pair { |k, _| conf[k] = send(k) }
       if type =~ /^Sandbox(Input|Decoder|Filter|Encoder|Output)/
         Heka::Sandbox::OPTIONS.each_pair { |k, _| conf[k] = send(k) }
