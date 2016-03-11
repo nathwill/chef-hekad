@@ -18,12 +18,38 @@
 require 'spec_helper'
 
 describe 'hekad::service' do
-  let(:chef_run) { ChefSpec::ServerRunner.new.converge(described_recipe) }
-
   context 'When all attributes are default, on Ubuntu' do
     let(:chef_run) do
       ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '12.04')
       .converge(described_recipe)
+    end
+
+    before do
+      allow(Heka::Init).to receive(:systemd?).and_return(false)
+      allow(Heka::Init).to receive(:upstart?).and_return(true)
+    end
+
+    it 'skips the sysv service' do
+      expect(chef_run).to_not create_template '/etc/init.d/hekad'
+    end
+
+    it 'skips the launchd plist' do
+      expect(chef_run).to_not create_template '/Library/LaunchDaemons/hekad.plist'
+    end
+
+    it 'converges successfully' do
+      chef_run # This should not raise an error
+    end
+  end
+
+  context 'When all attributes are default, on Mac OSX' do
+    let(:chef_run) do
+      ChefSpec::ServerRunner.new(platform: 'mac_os_x', version: '10.10')
+      .converge(described_recipe)
+    end
+
+    it 'creates the launchd plist' do
+      expect(chef_run).to create_template '/Library/LaunchDaemons/hekad.plist'
     end
 
     it 'converges successfully' do
@@ -37,29 +63,63 @@ describe 'hekad::service' do
       .converge(described_recipe)
     end
 
+    before do
+      allow(Heka::Init).to receive(:systemd?).and_return(true)
+      allow(Heka::Init).to receive(:upstart?).and_return(false)
+    end
+
+    it 'skips the sysv init script' do
+      expect(chef_run).to_not create_template '/etc/init.d/hekad'
+    end
+
+    it 'skips the launchd plist' do
+      expect(chef_run).to_not create_template '/Library/LaunchDaemons/hekad.plist'
+    end
+
     it 'converges successfully' do
       chef_run # This should not raise an error
     end
   end
 
+  let(:chef_run) do
+    ChefSpec::ServerRunner.new(platform: 'centos', version: '6.7')
+    .converge(described_recipe)
+  end
+
+  before do
+    allow(Heka::Init).to receive(:systemd?).and_return(false)
+    allow(Heka::Init).to receive(:upstart?).and_return(false)
+  end
+
   it 'creates the heka user' do
-    expect(chef_run).to create_user 'heka'
+    expect(chef_run).to create_user('heka').with(
+      shell: '/bin/false',
+      system: true,
+      gid: 'heka'
+    )
   end
 
   it 'creates the heka group' do
-    expect(chef_run).to create_group 'heka'
+    expect(chef_run).to create_group('heka').with(system: true)
   end
 
   it 'creates the heka base_dir' do
-    expect(chef_run).to create_directory '/var/cache/hekad'
+    expect(chef_run).to create_directory('/var/cache/hekad').with(
+      owner: 'heka',
+      group: 'heka',
+      recursive: true,
+    )
   end
 
   it 'manages the heka service' do
+    expect(chef_run).to delete_file '/etc/init.d/heka'
     expect(chef_run).to disable_service 'heka'
     expect(chef_run).to stop_service 'heka'
   end
 
   it 'manages the hekad service' do
+    expect(chef_run).to disable_service 'heka'
+    expect(chef_run).to stop_service 'heka'
     expect(chef_run).to enable_service 'hekad'
     expect(chef_run).to start_service 'hekad'
   end

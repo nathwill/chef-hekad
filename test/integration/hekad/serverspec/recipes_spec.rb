@@ -16,11 +16,6 @@ describe 'heka::default' do
       it { should be_directory }
     end
 
-    describe file('/etc/heka/conf.d/hekad.toml') do
-      its(:content) { should match /\[hekad\]/ }
-      its(:content) { should match /maxprocs = 2/ }
-    end
-
     describe service('hekad') do
       it { should be_running }
     end
