@@ -68,14 +68,6 @@ describe 'hekad::service' do
       allow(Heka::Init).to receive(:upstart?).and_return(false)
     end
 
-    it 'creates the systemd service unit' do
-      expect(chef_run).to create_systemd_service 'hekad'
-    end
-
-    it 'skips the upstart init script' do
-      expect(chef_run).to_not create_template '/etc/init/hekad.conf'
-    end
-
     it 'skips the sysv init script' do
       expect(chef_run).to_not create_template '/etc/init.d/hekad'
     end
