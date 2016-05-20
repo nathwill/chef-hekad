@@ -45,6 +45,44 @@ allows a free-form configuration hash under the config property.
 |path|config base for rendered file|`node['heka']['config_dir']`|
 |config|configuration hash|`{}`|
 
+#### Example
+
+A resource like:
+
+```ruby
+heka_config "elasticsearch_output" do
+  config(
+    type: "ElasticSearchOutput",
+    message_matcher: "TRUE",
+    can_exit: false,
+    encoder: "elasticsearch_json_encoder",
+    use_buffering: false,
+    buffering: {
+      max_file_size: 10_485_760, # 10MiB
+      max_buffer_size: 104_857_600, # 100MiB
+      full_action: "block"
+    },
+    server: "http://1.2.3.4:9201"
+  )
+end
+```
+
+will render a config like:
+
+```toml
+[elasticsearch_output]
+can_exit = false
+encoder = "elasticsearch_json_encoder"
+message_matcher = "TRUE"
+server = "http://1.2.3.4:9201"
+type = "ElasticSearchOutput"
+use_buffering = false
+[elasticsearch_output.buffering]
+full_action = "block"
+max_buffer_size = 104857600
+max_file_size = 10485760
+```
+
 ### heka_global
 
 Resource for global configuration section (i.e. the `[hekad]` block).
