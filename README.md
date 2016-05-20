@@ -72,8 +72,30 @@ Resource for global configuration section (i.e. the `[hekad]` block).
 |log_flags|Integer. see docs|nil|
 |full_buffer_max_retries|Integer. see docs|nil|
 
+#### Example
+
+A resource like:
+
+```ruby
+heka_global 'hekad' do
+  maxprocs 2
+  base_dir '/var/cache/hekad'
+  full_buffer_max_retries 5
+end
+```
+
+will render a config like:
+
+```toml
+[hekad]
+base_dir = "/var/cache/hekad"
+full_buffer_max_retries = 5
+maxprocs = 2
+```
+
 ### heka_input
 
+Resource for configuring input plugins
 
 |Attribute|Description|Default|
 |---------|-----------|-------|
@@ -111,7 +133,31 @@ Resource for global configuration section (i.e. the `[hekad]` block).
 |delay|String. See docs.|nil|
 |max_retries|Integer. See docs.|nil|
 
+#### Example
+
+A resource like:
+
+```ruby
+heka_input 'load_avg_input' do
+  type 'FilePollingInput'
+  decoder 'load_avg_decoder'
+  config file_path: '/proc/loadavg', ticker_interval: 1
+end
+```
+
+will render a config like:
+
+```toml
+[load_avg_input]
+decoder = "load_avg_decoder"
+file_path = "/proc/loadavg"
+ticker_interval = 1
+type = "FilePollingInput"
+```
+
 ### heka_splitter
+
+Resource for configuring splitter plugins.
 
 |Attribute|Description|Default|
 |---------|-----------|-------|
@@ -125,6 +171,27 @@ Resource for global configuration section (i.e. the `[hekad]` block).
 |max_delay|String. See docs.|nil|
 |delay|String. See docs.|nil|
 |max_retries|Integer. See docs.|nil|
+
+#### Example
+
+A resource like:
+
+```ruby
+heka_splitter 'split_on_space' do
+  type 'TokenSplitter'
+  deliver_incomplete_final false
+  config delimiter: ' '
+end
+```
+
+will render a config like:
+
+```toml
+[split_on_space]
+delimiter = " "
+deliver_incomplete_final = false
+type = "TokenSplitter"
+```
 
 ### heka_decoder
 
@@ -144,6 +211,28 @@ Resource for global configuration section (i.e. the `[hekad]` block).
 |max_delay|String. See docs.|nil|
 |delay|String. See docs.|nil|
 |max_retries|Integer. See docs.|nil|
+
+#### Example
+
+A resource like:
+
+```ruby
+heka_decoder 'load_avg_decoder' do
+  type 'SandboxDecoder'
+  filename 'lua_decoders/linux_loadavg.lua'
+  sandbox_config payload_keep: false
+end
+```
+
+will render a config like:
+
+```toml
+[load_avg_decoder]
+filename = "lua_decoders/linux_loadavg.lua"
+type = "SandboxDecoder"
+[load_avg_decoder.config]
+payload_keep = false
+```
 
 ### heka_filter
 
@@ -173,6 +262,45 @@ Resource for global configuration section (i.e. the `[hekad]` block).
 |delay|String. See docs.|nil|
 |max_retries|Integer. See docs.|nil|
 
+#### Example
+
+A resource like:
+
+```ruby
+heka_filter 'load_avg_filter' do
+  type 'SandboxFilter'
+  filename 'lua_filters/loadavg.lua'
+  ticker_interval 5
+  preserve_data true
+  message_matcher "Type == 'stats.loadavg'"
+  sandbox_config preservation_version: 1
+  use_buffering true
+  buffering_config do
+    max_file_size 1024 ** 2
+    max_buffer_size 1024 ** 3
+    full_action 'block'
+  end
+end
+```
+
+will render a config like:
+
+```toml
+[load_avg_filter]
+filename = "lua_filters/loadavg.lua"
+message_matcher = "Type == 'stats.loadavg'"
+preserve_data = true
+ticker_interval = 5
+type = "SandboxFilter"
+use_buffering = true
+[load_avg_filter.buffering]
+full_action = "block"
+max_buffer_size = 1073741824
+max_file_size = 1048576
+[load_avg_filter.config]
+preservation_version = 1
+```
+
 ### heka_encoder
 
 |Attribute|Description|Default|
@@ -191,6 +319,20 @@ Resource for global configuration section (i.e. the `[hekad]` block).
 |max_delay|String. See docs.|nil|
 |delay|String. See docs.|nil|
 |max_retries|Integer. See docs.|nil|
+
+#### Example
+
+A resource like:
+
+```ruby
+heka_encoder 'RstEncoder'
+```
+
+will render a config like:
+
+```toml
+[RstEncoder]
+```
 
 ### heka_output
 
@@ -233,6 +375,40 @@ Resource for global configuration section (i.e. the `[hekad]` block).
 |max_delay|String. See docs.|nil|
 |delay|String. See docs.|nil|
 |max_retries|Integer. See docs.|nil|
+
+#### Example
+
+A resource like:
+
+```ruby
+heka_output 'debug_output' do
+  type 'FileOutput'
+  message_matcher 'TRUE'
+  encoder 'RstEncoder'
+  config path: '/tmp/heka-debug.log'
+  use_buffering  true
+  buffering_config do
+    max_file_size 1024 ** 2
+    max_buffer_size 1024 ** 3
+    full_action 'block'
+  end
+end
+```
+
+will render a config like:
+
+```toml
+[debug_output]
+encoder = "RstEncoder"
+message_matcher = "TRUE"
+path = "/tmp/heka-debug.log"
+type = "FileOutput"
+use_buffering = true
+[debug_output.buffering]
+full_action = "block"
+max_buffer_size = 1073741824
+max_file_size = 1048576
+```
 
 --
 [chef]: https://www.chef.io/
