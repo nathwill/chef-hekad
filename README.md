@@ -44,6 +44,50 @@ Heka configuration, maps to a file under `/etc/heka.d/`.
 |path|config base for rendered file|`node['heka']['config_dir']`|
 |config|configuration hash|`{}`|
 
+### heka_global
+
+|Attribute|Description|Default|
+|---------|-----------|-------|
+|cpuprof|String. see docs|nil|
+|max_message_loops|Integer. see docs|nil|
+|max_process_inject|Integer. see docs|nil|
+|max_process_duration|Integer. see docs|nil|
+|max_timer_inject|Integer. see docs|nil|
+|max_pack_idle|String. see docs|nil|
+|maxprocs|Integer. see docs|nil|
+|memprof|String. see docs|nil|
+|poolsize|Integer. see docs|nil|
+|plugin_chansize|Integer. see docs|nil|
+|base_dir|String. see docs|nil|
+|share_dir|String. see docs|nil|
+|sample_denominator|Integer. see docs|nil|
+|pid_file|String. see docs|nil|
+|hostname|String. see docs|nil|
+|max_message_size|Integer. see docs|nil|
+|log_flags|Integer. see docs|nil|
+|full_buffer_max_retries|Integer. see docs|nil|
+
+### heka_input
+
+|Attribute|Description|Default|
+|---------|-----------|-------|
+
+
+### heka_splitter
+
+
+### heka_decoder
+
+
+### heka_filter
+
+
+### heka_encoder
+
+
+### heka_output
+
+
 [chef]: https://www.chef.io/
 [docs]: http://hekad.readthedocs.org/
 [gc]: http://hekad.readthedocs.org/en/latest/config/index.html#global-configuration-options
