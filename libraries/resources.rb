@@ -188,6 +188,7 @@ class HekaConfig
     option_attributes Heka::Encoder::OPTIONS
     option_attributes Heka::Sandbox::OPTIONS
     option_attributes Heka::Restart::OPTIONS
+
     # rubocop: disable AbcSize
     def to_toml
       conf = {}.merge config
