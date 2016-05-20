@@ -42,6 +42,7 @@ end
 package 'heka' do
   source pkg_file_path
   provider Chef::Provider::Package::Dpkg if platform_family?('debian')
+  allow_downgrade true
   not_if { platform?('mac_os_x') }
 end
 
