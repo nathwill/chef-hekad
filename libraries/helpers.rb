@@ -128,13 +128,13 @@ module Heka
     OPTIONS ||= {
       max_file_size: { kind_of: Integer },
       max_buffer_size: { kind_of: Integer },
-      full_action: { kind_of: String, equal_to: %w( shutdown drop block ) },
+      full_action: { kind_of: String, equal_to: %w(shutdown drop block) },
       cursor_update_count: { kind_of: Integer }
     }.freeze
   end
 
   module TLS
-    VERSIONS ||= %w( SSL30 TLS10 TLS11 TLS12 ).freeze
+    VERSIONS ||= %w(SSL30 TLS10 TLS11 TLS12).freeze
 
     CIPHERS ||= %w(
       RSA_WITH_RC4_128_SHA

@@ -14,7 +14,7 @@ describe HekaConfig::Output do
   end
 
   let(:toml) do
-    "[elasticsearch_output]\nencoder = \"es_json_encoder\"\nmessage_matcher = \"Type == 'logfile'\"\nserver = \"http://es-server:9200\"\ntype = \"ElasticSearchOutput\"\nuse_buffering = true\n[elasticsearch_output.buffering]\nfull_action = \"block\"\nmax_file_size = 1073741824\n"
+    "\n[elasticsearch_output]\nencoder = \"es_json_encoder\"\nmessage_matcher = \"Type == 'logfile'\"\nserver = \"http://es-server:9200\"\ntype = \"ElasticSearchOutput\"\nuse_buffering = true\n\n[elasticsearch_output.buffering]\nfull_action = \"block\"\nmax_file_size = 1073741824\n"
   end
 
   it 'sets a proper output toml config' do
@@ -39,7 +39,7 @@ describe HekaConfig::Output do
   end
 
   let(:tls_toml) do
-    "[amqp_output]\nexchange = \"testout\"\nexchange_type = \"fanout\"\nmessage_matcher = \"Logger == 'TestWebserver'\"\ntype = \"AMQPOutput\"\nurl = \"amqp://guest:guest@rabbitmq/\"\nuse_tls = true\n[amqp_output.tls]\ncert_file = \"/usr/share/heka/tls/cert.pem\"\nkey_file = \"/usr/share/heka/tls/cert.key\"\nmin_version = \"TLS11\"\nprefer_server_ciphers = true\n"
+    "\n[amqp_output]\nexchange = \"testout\"\nexchange_type = \"fanout\"\nmessage_matcher = \"Logger == 'TestWebserver'\"\ntype = \"AMQPOutput\"\nurl = \"amqp://guest:guest@rabbitmq/\"\nuse_tls = true\n\n[amqp_output.tls]\ncert_file = \"/usr/share/heka/tls/cert.pem\"\nkey_file = \"/usr/share/heka/tls/cert.key\"\nmin_version = \"TLS11\"\nprefer_server_ciphers = true\n"
   end
 
   it 'sets a proper tls output config' do
@@ -56,7 +56,7 @@ describe HekaConfig::Output do
   end
 
   let(:sandbox_toml) do
-    "[redis_output]\nfilename = \"lua_outputs/redis.lua\"\npreserve_data = true\ntype = \"SandboxOutput\"\n[redis_output.config]\nchannel = \"heka-output\"\nencoding = \"json\"\n"
+    "\n[redis_output]\nfilename = \"lua_outputs/redis.lua\"\npreserve_data = true\ntype = \"SandboxOutput\"\n\n[redis_output.config]\nchannel = \"heka-output\"\nencoding = \"json\"\n"
   end
 
   it 'sets proper sandbox toml config' do

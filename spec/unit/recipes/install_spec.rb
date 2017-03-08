@@ -36,29 +36,4 @@ describe 'hekad::install' do
       chef_run # This should not raise an error
     end
   end
-
-  context 'When all attributes are default, on Mac OSX' do
-    let(:chef_run) do
-      ChefSpec::ServerRunner.new(platform: 'mac_os_x', version: '10.10')
-        .converge(described_recipe)
-    end
-
-    before do
-      stub_command("which git").and_return("/usr/bin/git")
-    end
-
-    it 'sets up homebrew' do
-      expect(chef_run).to include_recipe 'homebrew::default'
-      expect(chef_run).to include_recipe 'homebrew::cask'
-    end
-
-
-    it 'installs homebrew package' do
-      expect(chef_run).to install_homebrew_cask 'heka'
-    end
-
-    it 'converges successfully' do
-      chef_run # This should not raise an error
-    end
-  end
 end

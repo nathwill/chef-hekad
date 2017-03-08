@@ -13,6 +13,7 @@ depends          'homebrew'
   supports p
 end
 
-gem 'toml-rb' if respond_to?(:gem)
+gem 'toml' if respond_to?(:gem)
+
 source_url 'https://github.com/nathwill/chef-hekad' if respond_to?(:source_url)
 issues_url 'https://github.com/nathwill/chef-hekad/issues' if respond_to?(:issues_url)

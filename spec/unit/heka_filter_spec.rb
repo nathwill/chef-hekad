@@ -21,7 +21,7 @@ describe HekaConfig::Filter do
   end
 
   let(:toml) do
-    "[FxaDailyActiveUsers]\nfilename = \"lua_filters/unique_items.lua\"\nmessage_matcher = \"Logger == 'FxaAuth'\"\npreserve_data = true\nticker_interval = 60\ntype = \"SandboxFilter\"\nuse_buffering = true\n[FxaDailyActiveUsers.buffering]\nfull_action = \"block\"\nmax_buffer_size = 1099511627776\nmax_file_size = 1073741824\n[FxaDailyActiveUsers.config]\nmessage_variable = \"Fields[uid]\"\npreservation_version = 0\ntitle = \"Estimated Daily Active Users\"\n"
+    "\n[FxaDailyActiveUsers]\nfilename = \"lua_filters/unique_items.lua\"\nmessage_matcher = \"Logger == 'FxaAuth'\"\npreserve_data = true\nticker_interval = 60\ntype = \"SandboxFilter\"\nuse_buffering = true\n\n[FxaDailyActiveUsers.buffering]\nfull_action = \"block\"\nmax_buffer_size = 1099511627776\nmax_file_size = 1073741824\n\n[FxaDailyActiveUsers.config]\nmessage_variable = \"Fields[uid]\"\npreservation_version = 0\ntitle = \"Estimated Daily Active Users\"\n"
   end
 
   it 'sets proper filter config' do

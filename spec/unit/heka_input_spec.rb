@@ -10,7 +10,7 @@ describe HekaConfig::Input do
   end
 
   let(:toml) do
-    "[load_avg_input]\ndecoder = \"load_avg_decoder\"\nfile_path = \"/proc/loadavg\"\nticker_interval = 1\ntype = \"FilePollingInput\"\n"
+    "\n[load_avg_input]\ndecoder = \"load_avg_decoder\"\nfile_path = \"/proc/loadavg\"\nticker_interval = 1\ntype = \"FilePollingInput\"\n"
   end
 
   it 'generates a proper toml string' do
@@ -30,7 +30,7 @@ describe HekaConfig::Input do
   end
 
   let(:tls_toml) do
-    "[tls_input]\naddress = \"0.0.0.0:8325\"\ntype = \"HttpListenInput\"\nuse_tls = true\n[tls_input.tls]\ncert_file = \"/usr/share/heka/tls/cert.pem\"\nkey_file = \"/usr/share/heka/tls/cert.key\"\nmin_version = \"TLS11\"\nprefer_server_ciphers = true\n"
+    "\n[tls_input]\naddress = \"0.0.0.0:8325\"\ntype = \"HttpListenInput\"\nuse_tls = true\n\n[tls_input.tls]\ncert_file = \"/usr/share/heka/tls/cert.pem\"\nkey_file = \"/usr/share/heka/tls/cert.key\"\nmin_version = \"TLS11\"\nprefer_server_ciphers = true\n"
   end
 
   it 'configures a tls subsection' do
@@ -46,7 +46,7 @@ describe HekaConfig::Input do
   end
 
   let(:sandbox_toml) do
-    "[sandbox_input]\nfilename = \"lua_inputs/my_input.lua\"\ntype = \"SandboxInput\"\n[sandbox_input.config]\npreserve_payload = false\n"
+    "\n[sandbox_input]\nfilename = \"lua_inputs/my_input.lua\"\ntype = \"SandboxInput\"\n\n[sandbox_input.config]\npreserve_payload = false\n"
   end
 
   it 'generates a proper sandbox config' do
