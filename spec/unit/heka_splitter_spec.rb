@@ -10,7 +10,7 @@ describe HekaConfig::Splitter do
   end
 
   let(:toml) do
-    "[split_on_space]\ndelimiter = \" \"\ndeliver_incomplete_final = false\ntype = \"TokenSplitter\"\n"
+    "\n[split_on_space]\ndelimiter = \" \"\ndeliver_incomplete_final = false\ntype = \"TokenSplitter\"\n"
   end
 
   it 'sets a proper splitter toml config' do

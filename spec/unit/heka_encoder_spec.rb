@@ -10,7 +10,7 @@ describe HekaConfig::Encoder do
   end
 
   let(:toml) do
-    "[custom_json_encoder]\nfilename = \"path/to/custom_json_encoder.lua\"\ntype = \"SandboxEncoder\"\n[custom_json_encoder.config]\nmsg_fields = [\"field1\", \"field2\"]\n"
+    "\n[custom_json_encoder]\nfilename = \"path/to/custom_json_encoder.lua\"\ntype = \"SandboxEncoder\"\n\n[custom_json_encoder.config]\nmsg_fields = [\"field1\",\"field2\"]\n"
   end
 
   it 'sets a proper encoder toml config' do

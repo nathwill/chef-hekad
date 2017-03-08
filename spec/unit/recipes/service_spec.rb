@@ -29,10 +29,6 @@ describe 'hekad::service' do
       allow(Heka::Init).to receive(:upstart?).and_return(true)
     end
 
-    it 'skips the sysv service' do
-      expect(chef_run).to_not create_template '/etc/init.d/hekad'
-    end
-
     it 'skips the launchd plist' do
       expect(chef_run).to_not create_template '/Library/LaunchDaemons/hekad.plist'
     end
@@ -66,10 +62,6 @@ describe 'hekad::service' do
     before do
       allow(Heka::Init).to receive(:systemd?).and_return(true)
       allow(Heka::Init).to receive(:upstart?).and_return(false)
-    end
-
-    it 'skips the sysv init script' do
-      expect(chef_run).to_not create_template '/etc/init.d/hekad'
     end
 
     it 'skips the launchd plist' do

@@ -16,7 +16,7 @@ describe HekaConfig::Base do
   end
 
   let(:config) do
-    "[my_ip]\ndecoder = \"\"\nerror_severity = 1\nsuccess_severity = 6\nticker_interval = 5\ntype = \"HttpInput\"\nurl = \"https://ipv4.icanhazip.com\"\n[my_ip.headers]\nuser-agent = \"Mozilla Heka\"\n"
+    "\n[my_ip]\ndecoder = \"\"\nerror_severity = 1\nsuccess_severity = 6\nticker_interval = 5\ntype = \"HttpInput\"\nurl = \"https://ipv4.icanhazip.com\"\n\n[my_ip.headers]\nuser-agent = \"Mozilla Heka\"\n"
   end
 
   it 'generates proper toml config' do

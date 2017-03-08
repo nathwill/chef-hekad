@@ -44,7 +44,7 @@ class HekaConfig
       conf = {}.merge config
       conf[:type] ||= type || config['type']
       conf.delete_if { |_, v| v.nil? }
-      TOML.dump(name => conf)
+      TOML::Generator.new(name => conf).body
     end
   end
 
@@ -59,7 +59,7 @@ class HekaConfig
       conf[:type] = type
       Heka::Global::OPTIONS.each_pair { |k, _| conf[k] = send(k) }
       conf.delete_if { |_, v| v.nil? }
-      TOML.dump(hekad: conf)
+      TOML::Generator.new(hekad: conf).body
     end
   end
 
@@ -97,7 +97,7 @@ class HekaConfig
         end
       end
       conf.delete_if { |_, v| v.nil? }
-      TOML.dump(name => conf)
+      TOML::Generator.new(name => conf).body
     end
     # rubocop: enable AbcSize
     # rubocop: enable MethodLength
@@ -116,7 +116,7 @@ class HekaConfig
       Heka::Restart::OPTIONS.each_pair { |k, _| conf[k] = send(k) }
       Heka::Splitter::OPTIONS.each_pair { |k, _| conf[k] = send(k) }
       conf.delete_if { |_, v| v.nil? }
-      TOML.dump(name => conf)
+      TOML::Generator.new(name => conf).body
     end
   end
 
@@ -139,7 +139,7 @@ class HekaConfig
         conf[:config] = conf.delete(:sandbox_config)
       end
       conf.delete_if { |_, v| v.nil? }
-      TOML.dump(name => conf)
+      TOML::Generator.new(name => conf).body
     end
     # rubocop: enable AbcSize
   end
@@ -175,7 +175,7 @@ class HekaConfig
         conf[:config] = conf.delete(:sandbox_config)
       end
       conf.delete_if { |_, v| v.nil? }
-      TOML.dump(name => conf)
+      TOML::Generator.new(name => conf).body
     end
     # rubocop: enable AbcSize
     # rubocop: enable MethodLength
@@ -200,7 +200,7 @@ class HekaConfig
         conf[:config] = conf.delete(:sandbox_config)
       end
       conf.delete_if { |_, v| v.nil? }
-      TOML.dump(name => conf)
+      TOML::Generator.new(name => conf).body
     end
     # rubocop: enable AbcSize
   end
@@ -250,7 +250,7 @@ class HekaConfig
         end
       end
       conf.delete_if { |_, v| v.nil? }
-      TOML.dump(name => conf)
+      TOML::Generator.new(name => conf).body
     end
     # rubocop: enable AbcSize
     # rubocop: enable MethodLength
@@ -284,7 +284,7 @@ class HekaConfig
       heka_output
     ).map(&:to_sym).each { |r| provides r }
 
-    %w( create delete ).map(&:to_sym).each do |a|
+    %w(create delete).map(&:to_sym).each do |a|
       action a do
         r = new_resource
 

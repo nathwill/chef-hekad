@@ -24,7 +24,8 @@ module Hekad
       end
 
       # Restart service if any of our configurations changed
-      run_context.resource_collection.resources(service: 'hekad')
+      run_context.resource_collection
+                 .resources(service: 'hekad')
                  .run_action(:restart) if updated
     end
   end

@@ -10,7 +10,7 @@ describe HekaConfig::Global do
   end
 
   let(:toml) do
-    "[hekad]\nbase_dir = \"/var/cache/heka\"\nlog_flags = 0\nmaxprocs = 2\n"
+    "\n[hekad]\nbase_dir = \"/var/cache/heka\"\nlog_flags = 0\nmaxprocs = 2\n"
   end
 
   it 'sets a proper global toml config' do

@@ -13,7 +13,7 @@ describe HekaConfig::Decoder do
   end
 
   let(:toml) do
-    "[apache_geoip_decoder]\ndb_file = \"/etc/geoip/GeoLiteCity.dat\"\nsource_ip_field = \"remote_host\"\ntarget_field = \"geoip\"\ntype = \"GeoIpDecoder\"\n"
+    "\n[apache_geoip_decoder]\ndb_file = \"/etc/geoip/GeoLiteCity.dat\"\nsource_ip_field = \"remote_host\"\ntarget_field = \"geoip\"\ntype = \"GeoIpDecoder\"\n"
   end
 
   it 'sets a proper decoder toml config' do
@@ -34,7 +34,7 @@ describe HekaConfig::Decoder do
   end
 
   let(:sandbox_toml) do
-    "[nginx_access_log]\nfilename = \"lua_decoders/nginx_access.lua\"\npreserve_data = true\ntype = \"SandboxDecoder\"\n[nginx_access_log.config]\nlog_format = \"$remote_addr - $remote_user [$time_local] \\\"$request\\\" $status $body_bytes_sent \\\"$http_referer\\\" \\\"$http_user_agent\\\"\"\ntype = \"combined\"\nuser_agent_transform = true\n"
+    "\n[nginx_access_log]\nfilename = \"lua_decoders/nginx_access.lua\"\npreserve_data = true\ntype = \"SandboxDecoder\"\n\n[nginx_access_log.config]\nlog_format = \"$remote_addr - $remote_user [$time_local] \\\"$request\\\" $status $body_bytes_sent \\\"$http_referer\\\" \\\"$http_user_agent\\\"\"\ntype = \"combined\"\nuser_agent_transform = true\n"
   end
 
   it 'sets a proper sandbox decoder toml config' do
