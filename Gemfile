@@ -7,7 +7,7 @@ group :test do
   gem 'foodcritic'
   gem 'rake'
   gem 'rubocop'
-  gem 'toml-rb'
+  gem 'toml'
 end
 
 group :integration do
