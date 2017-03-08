@@ -4,7 +4,7 @@ maintainer_email 'nath.e.will@gmail.com'
 license          'apache2'
 description      'Installs/Configures heka'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          '4.1.0'
+version          '5.0.0'
 
 depends          'systemd'
 depends          'homebrew'
