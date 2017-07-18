@@ -6,7 +6,7 @@ description      'Installs/Configures heka'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version          '5.0.0'
 
-depends          'systemd'
+depends          'systemd', '~> 2.1'
 depends          'homebrew'
 
 %w( mac_os_x ubuntu fedora redhat centos scientific ).each do |p|
