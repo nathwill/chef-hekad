@@ -1,3 +1,7 @@
+# 6.0.0 / 2017-07-19
+
+* use systemd v3
+
 # 5.0.0 / 2017-03-08
 
 * switch toml gems
