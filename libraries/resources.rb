@@ -273,7 +273,7 @@ class HekaConfig
       true
     end
 
-    %w(
+    %w[
       heka_config
       heka_global
       heka_input
@@ -282,18 +282,17 @@ class HekaConfig
       heka_filter
       heka_encoder
       heka_output
-    ).map(&:to_sym).each { |r| provides r }
+    ].map(&:to_sym).each { |r| provides r }
 
-    %w(create delete).map(&:to_sym).each do |a|
+    %w[create delete].map(&:to_sym).each do |a|
       action a do
-        r = new_resource
+        use_inline_resources
 
-        f = file ::File.join(r.path, "#{r.name}.toml") do
+        r = new_resource
+        file ::File.join(r.path, "#{r.name}.toml") do
           content r.to_toml
           action a
         end
-
-        new_resource.updated_by_last_action(f.updated_by_last_action?)
       end
     end
   end

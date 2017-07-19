@@ -18,25 +18,27 @@
 require 'spec_helper'
 
 describe 'hekad::configure' do
-  context 'When all attributes are default, on an unspecified platform' do
-    let(:chef_run) do
-      ChefSpec::ServerRunner.new(platform: 'centos', version: '7.0')
-        .converge(described_recipe)
-    end
+  CENTOS_VERSIONS.each do |v|
+    context 'When all attributes are default, on an unspecified platform' do
+      let(:chef_run) do
+        ChefSpec::ServerRunner.new(platform: 'centos', version: v)
+          .converge(described_recipe)
+      end
 
-    it 'sets up the config directory' do
-      expect(chef_run).to create_directory '/etc/heka/conf.d'
-    end
+      it 'sets up the config directory' do
+        expect(chef_run).to create_directory '/etc/heka/conf.d'
+      end
 
-    it 'installs the hekad global configuration' do
-      expect(chef_run).to create_heka_global('hekad').with(
-        maxprocs: 2,
-        base_dir: '/var/cache/hekad'
-      )
-    end
+      it 'installs the hekad global configuration' do
+        expect(chef_run).to create_heka_global('hekad').with(
+          maxprocs: 2,
+          base_dir: '/var/cache/hekad'
+        )
+      end
 
-    it 'converges successfully' do
-      chef_run # This should not raise an error
+      it 'converges successfully' do
+        chef_run # This should not raise an error
+      end
     end
   end
 end
