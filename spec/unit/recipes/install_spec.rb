@@ -18,22 +18,24 @@
 require 'spec_helper'
 
 describe 'hekad::install' do
-  context 'When all attributes are default, on an unspecified platform' do
-    let(:chef_run) do
-      ChefSpec::ServerRunner.new(platform: 'centos', version: '7.0')
-        .converge(described_recipe)
-    end
+  CENTOS_VERSIONS.each do |v|
+    context 'When all attributes are default, on an unspecified platform' do
+      let(:chef_run) do
+        ChefSpec::ServerRunner.new(platform: 'centos', version: v)
+          .converge(described_recipe)
+      end
 
-    it 'downloads the package' do
-      expect(chef_run).to create_remote_file 'heka_release_pkg'
-    end
+      it 'downloads the package' do
+        expect(chef_run).to create_remote_file 'heka_release_pkg'
+      end
 
-    it 'installs the package' do
-      expect(chef_run).to install_package 'heka'
-    end
+      it 'installs the package' do
+        expect(chef_run).to install_package 'heka'
+      end
 
-    it 'converges successfully' do
-      chef_run # This should not raise an error
+      it 'converges successfully' do
+        chef_run # This should not raise an error
+      end
     end
   end
 end

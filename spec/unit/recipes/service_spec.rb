@@ -19,43 +19,47 @@ require 'spec_helper'
 
 describe 'hekad::service' do
   context 'When all attributes are default, on Ubuntu' do
-    let(:chef_run) do
-      ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '12.04')
-      .converge(described_recipe)
-    end
+    UBUNTU_VERSIONS.each do |v|
+      let(:chef_run) do
+        ChefSpec::ServerRunner.new(platform: 'ubuntu', version: v)
+        .converge(described_recipe)
+      end
 
-    before do
-      allow(Heka::Init).to receive(:systemd?).and_return(false)
-      allow(Heka::Init).to receive(:upstart?).and_return(true)
-    end
+      before do
+        allow(Heka::Init).to receive(:systemd?).and_return(false)
+        allow(Heka::Init).to receive(:upstart?).and_return(true)
+      end
 
-    it 'skips the launchd plist' do
-      expect(chef_run).to_not create_template '/Library/LaunchDaemons/hekad.plist'
-    end
+      it 'skips the launchd plist' do
+        expect(chef_run).to_not create_template '/Library/LaunchDaemons/hekad.plist'
+      end
 
-    it 'converges successfully' do
-      chef_run # This should not raise an error
+      it 'converges successfully' do
+        chef_run # This should not raise an error
+      end
     end
   end
 
-  context 'When all attributes are default, on Mac OSX' do
-    let(:chef_run) do
-      ChefSpec::ServerRunner.new(platform: 'mac_os_x', version: '10.10')
-      .converge(described_recipe)
-    end
+  MAC_OS_X_VERSIONS.each do |v|
+    context "When all attributes are default, on Mac OS #{v}" do
+      let(:chef_run) do
+        ChefSpec::ServerRunner.new(platform: 'mac_os_x', version: v)
+        .converge(described_recipe)
+      end
 
-    it 'creates the launchd plist' do
-      expect(chef_run).to create_template '/Library/LaunchDaemons/hekad.plist'
-    end
+      it 'creates the launchd plist' do
+        expect(chef_run).to create_template '/Library/LaunchDaemons/hekad.plist'
+      end
 
-    it 'converges successfully' do
-      chef_run # This should not raise an error
+      it 'converges successfully' do
+        chef_run # This should not raise an error
+      end
     end
   end
 
   context 'When all attributes are default, on CentOS 7' do
     let(:chef_run) do
-      ChefSpec::ServerRunner.new(platform: 'centos', version: '7.0')
+      ChefSpec::ServerRunner.new(platform: 'centos', version: CENTOS7_VERSION)
       .converge(described_recipe)
     end
 
@@ -74,7 +78,7 @@ describe 'hekad::service' do
   end
 
   let(:chef_run) do
-    ChefSpec::ServerRunner.new(platform: 'centos', version: '6.7')
+    ChefSpec::ServerRunner.new(platform: 'centos', version: CENTOS6_VERSION)
     .converge(described_recipe)
   end
 
