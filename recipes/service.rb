@@ -37,13 +37,15 @@ end
 
 # systemd
 systemd_service 'hekad' do
-  description 'general purpose data acquisition and processing engine'
-  documentation 'man:hekad(1) https://hekad.readthedocs.org/'
+  unit do
+    description 'general purpose data acquisition and processing engine'
+    documentation ['man:hekad(1)', 'https://hekad.readthedocs.io']
+  end
   install do
     wanted_by 'multi-user.target'
   end
   service do
-    user node['heka']['user']
+    service_user node['heka']['user']
     group node['heka']['user']
     exec_start "/usr/bin/hekad -config=#{node['heka']['config_dir']}"
     restart 'on-failure'
