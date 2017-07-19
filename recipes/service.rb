@@ -37,13 +37,15 @@ end
 
 # systemd
 systemd_service 'hekad' do
-  description 'general purpose data acquisition and processing engine'
-  documentation 'man:hekad(1) https://hekad.readthedocs.org/'
+  unit do
+    description 'general purpose data acquisition and processing engine'
+    documentation ['man:hekad(1)', 'https://hekad.readthedocs.io']
+  end
   install do
     wanted_by 'multi-user.target'
   end
   service do
-    user node['heka']['user']
+    service_user node['heka']['user']
     group node['heka']['user']
     exec_start "/usr/bin/hekad -config=#{node['heka']['config_dir']}"
     restart 'on-failure'
@@ -88,13 +90,13 @@ file '/etc/init.d/heka' do
 end
 
 service 'heka' do
-  action [:stop, :disable]
+  action %i[stop disable]
   subscribes :stop, 'package[heka]', :immediately
 end
 
 service 'hekad' do
   provider Chef::Provider::Service::Upstart if Heka::Init.upstart?
-  action [:enable, :start]
+  action %i[enable start]
   subscribes :restart, 'package[heka]', :delayed
   subscribes :restart, 'homebrew_cask[heka]', :delayed
 end
