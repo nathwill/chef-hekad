@@ -1,6 +1,6 @@
 # Matchers for ChefSpec
 if defined?(ChefSpec)
-  %w(
+  %w[
     heka_config
     heka_global
     heka_input
@@ -8,7 +8,7 @@ if defined?(ChefSpec)
     heka_filter
     heka_encoder
     heka_output
-  ).map(&:to_sym).each { |r| ChefSpec.define_matcher(r) }
+  ].map(&:to_sym).each { |r| ChefSpec.define_matcher(r) }
 
   def create_heka_config(check)
     ChefSpec::Matchers::ResourceMatcher.new(:heka_config, :create, check)

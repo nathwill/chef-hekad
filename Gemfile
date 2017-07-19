@@ -4,6 +4,7 @@ gem 'berkshelf'
 
 group :test do
   gem 'chefspec'
+  gem 'dbus-systemd' # needed for chefspec to complete
   gem 'foodcritic'
   gem 'rake'
   gem 'rubocop'
