@@ -19,22 +19,20 @@
 require 'spec_helper'
 
 describe 'hekad::default' do
-  CENTOS_VERSIONS.each do |v|
-    context "default centos #{v}" do
-      let(:chef_run) do
-        ChefSpec::ServerRunner.new(platform: 'centos', version: v)
-          .converge(described_recipe)
-      end
+  context 'default' do
+    let(:chef_run) do
+      ChefSpec::ServerRunner.new(platform: 'centos', version: '7.0')
+        .converge(described_recipe)
+    end
 
-      it 'installs/configures package and service' do
-        %w( install configure service reload ).each do |r|
-          expect(chef_run).to include_recipe "hekad::#{r}"
-        end
+    it 'installs/configures package and service' do
+      %w( install configure service reload ).each do |r|
+        expect(chef_run).to include_recipe "hekad::#{r}"
       end
+    end
 
-      it 'converges successfully' do
-        chef_run # This should not raise an error
-      end
+    it 'converges successfully' do
+      chef_run # This should not raise an error
     end
   end
 end

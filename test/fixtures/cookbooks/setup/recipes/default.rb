@@ -44,9 +44,7 @@ heka_filter 'load_avg_filter' do
   end
 end
 
-heka_encoder 'RstEncoder' do
-  type 'RstEncoder'
-end
+heka_encoder 'RstEncoder'
 
 heka_output 'debug_output' do
   type 'FileOutput'

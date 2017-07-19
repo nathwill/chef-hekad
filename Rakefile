@@ -4,9 +4,7 @@ require 'rspec/core/rake_task'
 RSpec::Core::RakeTask.new(:chefspec)
 
 require 'rubocop/rake_task'
-RuboCop::RakeTask.new(:rubocop) do |task|
-  task.options = ['-D']
-end
+RuboCop::RakeTask.new
 
 require 'foodcritic'
 FoodCritic::Rake::LintTask.new
