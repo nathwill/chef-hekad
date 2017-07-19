@@ -363,7 +363,7 @@ preservation_version = 1
 A resource like:
 
 ```ruby
-heka_encoder 'RstEncoder' { type 'RstEncoder' }
+heka_encoder 'RstEncoder'
 ```
 
 will render a config like:

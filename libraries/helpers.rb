@@ -128,15 +128,15 @@ module Heka
     OPTIONS ||= {
       max_file_size: { kind_of: Integer },
       max_buffer_size: { kind_of: Integer },
-      full_action: { kind_of: String, equal_to: %w[shutdown drop block] },
+      full_action: { kind_of: String, equal_to: %w(shutdown drop block) },
       cursor_update_count: { kind_of: Integer }
     }.freeze
   end
 
   module TLS
-    VERSIONS ||= %w[SSL30 TLS10 TLS11 TLS12].freeze
+    VERSIONS ||= %w(SSL30 TLS10 TLS11 TLS12).freeze
 
-    CIPHERS ||= %w[
+    CIPHERS ||= %w(
       RSA_WITH_RC4_128_SHA
       RSA_WITH_3DES_EDE_CBC_SHA
       RSA_WITH_AES_128_CBC_SHA
@@ -150,7 +150,7 @@ module Heka
       ECDHE_RSA_WITH_AES_256_CBC_SHA
       ECDHE_RSA_WITH_AES_128_GCM_SHA256
       ECDHE_ECDSA_WITH_AES_128_GCM_SHA256
-    ].freeze
+    ).freeze
 
     OPTIONS ||= {
       server_name: { kind_of: String },
@@ -158,13 +158,13 @@ module Heka
       key_file: { kind_of: String },
       client_auth: {
         kind_of: String,
-        equal_to: %w[
+        equal_to: %w(
           NoClientCert
           RequestClientCert
           RequireAnyClientCert
           VerifyClientCertIfGiven
           RequireAndVerifyClientCert
-        ]
+        )
       },
       ciphers: {
         kind_of: Array,
