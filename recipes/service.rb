@@ -39,7 +39,7 @@ end
 systemd_service 'hekad' do
   unit do
     description 'general purpose data acquisition and processing engine'
-    documentation ['man:hekad(1)', 'https://hekad.readthedocs.io']
+    documentation ['https://hekad.readthedocs.io']
   end
   install do
     wanted_by 'multi-user.target'
