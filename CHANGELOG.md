@@ -1,3 +1,7 @@
+# 6.0.1 / 2017-11-07
+
+* do nothing on package by default
+
 # 6.0.0 / 2017-07-19
 
 * use systemd v3
