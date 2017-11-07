@@ -43,6 +43,7 @@ package 'heka' do
   source pkg_file_path
   provider Chef::Provider::Package::Dpkg if platform_family?('debian')
   not_if { platform?('mac_os_x') }
+  action :nothing
 end
 
 homebrew_cask 'heka' do

@@ -6,13 +6,9 @@ provisioner:
   name: chef_zero
 
 platforms:
-  - name: debian-7.11
-  - name: debian-8.8
-  - name: ubuntu-14.04
+  - name: debian-9.2
   - name: ubuntu-16.04
-  - name: centos-6.9
-  - name: centos-7.3
-  - name: osx-10.10
+  - name: centos-7.4
 
 suites:
   - name: hekad
