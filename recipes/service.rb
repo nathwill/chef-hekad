@@ -36,21 +36,23 @@ directory node['heka']['config']['base_dir'] do
 end
 
 # systemd
-systemd_service 'hekad' do
-  unit do
-    description 'general purpose data acquisition and processing engine'
-    documentation ['https://hekad.readthedocs.io']
-  end
-  install do
-    wanted_by 'multi-user.target'
-  end
-  service do
-    service_user node['heka']['user']
-    group node['heka']['user']
-    exec_start "/usr/bin/hekad -config=#{node['heka']['config_dir']}"
-    restart 'on-failure'
-    kill_mode 'mixed'
-  end
+systemd_unit 'hekad.service' do
+  content(
+    Unit: {
+      Description: 'general purpose data acquisition and processing engine',
+      Documentation: 'https://hekad.readthedocs.io'
+    },
+    Service: {
+      User: node['heka']['user'],
+      Group: node['heka']['user'],
+      ExecStart: "/usr/bin/hekad -config=#{node['heka']['config_dir']}",
+      Restart: 'on-failure',
+      KillMode: 'mixed'
+    },
+    Install: {
+      WantedBy: 'multi-user.target'
+    }
+  )
   only_if { Heka::Init.systemd? }
   notifies :restart, 'service[hekad]', :delayed
   action :create

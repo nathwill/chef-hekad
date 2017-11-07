@@ -1,5 +1,6 @@
-# 6.0.1 / 2017-11-07
+# 6.1.0 / 2017
 
+* use systemd_unit instead of systemd cookbook
 * do nothing on package by default
 
 # 6.0.0 / 2017-07-19
